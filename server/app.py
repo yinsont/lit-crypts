@@ -12,7 +12,7 @@ from models import User, Recipe
 import ipdb
 
 # Views go here!
-randomList = ["Tomatoes fall down the dragon wall", "Poorly wired circuit", "The same point of view", "Im that cat by the bar toasting to the good life", "Kill your friends guilt free."]
+randomList = ["Tomatoes fall down the dragon wall", "Poorlywiredcircuit", "The same point of view", "Imthatcatbythebartoastingtothegoodlife", "Kill your friends guilt free"]
 randomizer = ["😂", "🗿", "💀", "🙄", "🤑", "👨🏿‍🌾", 
               "🤵🏻", "🐸", "🦍", "🔫", "🤩", "🥶", 
               "🍕", "🧠", "🐱‍🏍", "💃🏻", "👨‍👩‍👧‍👦", "🎅", 
@@ -36,17 +36,35 @@ alphabet = ["A", "B", "C", "D", "E", "F","G", "H", "I",
             "J", "K", "L", "M", "N", "O", "P", "Q","R",
             "S", "T", "U", "V", "W", "X", "Y", "Z", "SPACE"]
 
+theCode = {}
 
 def consoleTest():
     randomAlphabetCode()
+    makeTheMessage()
 
+def makeTheMessage():
+    import random
+    randomNumber = random.randint(0, len(randomList) - 1)
+    message = randomList[randomNumber]
+    messageCopy = message
+    cryptedMessage = ""
+    for letter in messageCopy:
+        if letter == ' ':
+            print(f"{letter} : {theCode['SPACE']}")
+            cryptedMessage += theCode['SPACE']
+        else:
+            print(f"{letter} : {theCode[letter.upper()]}")
+            cryptedMessage += theCode[letter.upper()]
+    #     cryptedMessage.replace(letter, theCode[f"{letter.upper()}"])
+    
+    print(f"CRYPTED: {cryptedMessage} ")
+    
 
 def randomAlphabetCode(alphabet = alphabet):
-    import random
     alphabetCopy = alphabet
-    theCode = {}
 
     for letter in alphabetCopy:
+        import random
         randomNumber2 = random.randint(0, len(randomizer) - 1)
         # print(f"{letter}: {randomizer[randomNumber2]}") uncomment this to see difference
         while randomizer[randomNumber2] in theCode.values():
@@ -54,9 +72,10 @@ def randomAlphabetCode(alphabet = alphabet):
                 
         theCode[letter] = randomizer[randomNumber2]
         
-    for key, value in theCode.items():
-        print(f"{key} : {value}")
+    # for key, value in theCode.items():        check the encryption
+    #     print(f"{key} : {value}")
     return "Tomatoes"
+
 
 ipdb.set_trace()
 # if __name__ == '__main__':

@@ -23,13 +23,15 @@
     align-items: center;
 }
 
-.Title {
+#title {
     color: green;
+    font-size: 65px;
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: 'Games', sans-serif;
 }
 
 .navbar {
@@ -44,6 +46,7 @@
     background-color: white;
     position: relative;
     top: 0;
+    font-family: 'Games', sans-serif;
 }
 
 #leaderboard-container {
@@ -53,6 +56,7 @@
     text-align: center;
     position: relative;
     background-color: blueviolet;
+    font-family: 'Games', sans-serif;
 }
 
 #rankings-list-container {
@@ -60,6 +64,7 @@
     scroll-behavior: smooth;
     max-height: 520px;
     background-color: blueviolet;
+    font-family: 'Games', sans-serif;
 }
 
 #rankings-list{
@@ -67,4 +72,5 @@
     scroll-behavior: smooth;
     max-height: 520px;
     background-color: blueviolet;
+    font-family: 'Games', sans-serif;
 }

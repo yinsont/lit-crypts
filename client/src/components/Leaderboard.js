@@ -4,7 +4,7 @@ function Leaderboard() {
 
   return (
     <>
-    <main>
+  
       <div id="container">
         <h2>Leaderboard</h2>
         <div id="leaderboard-container">
@@ -19,7 +19,7 @@ function Leaderboard() {
             </div>
         </div>
       </div>
-      </main>
+     
     </>
   )
 }

@@ -1,7 +1,11 @@
 .Game {
     background-color:antiquewhite;
+    /* display: flex; */
     justify-content: center;
     align-items: center;
+    width: 70vw;
+    margin-left: auto;
+    margin-right: auto;
 }
 .Game-Display{
     background-color: cadetblue;
@@ -13,15 +17,23 @@
     margin: 0px;
 }
 
+.Game-Keys{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .Title {
     color: green;
     margin: 0;
     padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-
-.app {
-    background-color: antiquewhite;
-}
+/* .app {
+    background-color: blue;
+} */
 
 .navbar {
     width: 100%;

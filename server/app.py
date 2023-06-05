@@ -12,7 +12,7 @@ from models import User, Recipe
 import ipdb
 
 # Views go here!
-randomList = ["Tomatoes fall down the dragon wall", "Poorlywiredcircuit", "The same point of view", "Imthatcatbythebartoastingtothegoodlife", "Kill your friends guilt free"]
+randomList = ["Rolling eyes fall down the dragon wall", "Poorly wired circuit", "", "Im that cat by the bar toasting to the good life", "Kill your friends guilt free"]
 randomizer = ["😂", "🗿", "💀", "🙄", "🤑", "👨🏿‍🌾", 
               "🤵🏻", "🐸", "🦍", "🔫", "🤩", "🥶", 
               "🍕", "🧠", "🐱‍🏍", "💃🏻", "👨‍👩‍👧‍👦", "🎅", 
@@ -52,13 +52,14 @@ def makeTheMessage():
         if letter == ' ':
             print(f"{letter} : {theCode['SPACE']}")
             cryptedMessage += theCode['SPACE']
+        elif letter == "'":
+            cryptedMessage += letter
         else:
             print(f"{letter} : {theCode[letter.upper()]}")
             cryptedMessage += theCode[letter.upper()]
     #     cryptedMessage.replace(letter, theCode[f"{letter.upper()}"])
     
     print(f"CRYPTED: {cryptedMessage} ")
-    
 
 def randomAlphabetCode(alphabet = alphabet):
     alphabetCopy = alphabet

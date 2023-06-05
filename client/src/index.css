@@ -1,0 +1,28 @@
+.Game {
+    background-color:antiquewhite;
+    justify-content: center;
+    align-items: center;
+}
+.Game-Display{
+    background-color: cadetblue;
+    height: 60vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+}
+
+.Title {
+    color: green;
+    margin: 0;
+    padding: 0;
+}
+
+.app {
+    background-color: antiquewhite;
+}
+
+.navbar {
+    background-color: aquamarine;
+}

@@ -23,6 +23,10 @@
     align-items: center;
 }
 
+.app {
+    background-color: pink;
+
+}
 #title {
     color: green;
     font-size: 65px;
@@ -32,6 +36,7 @@
     justify-content: center;
     align-items: center;
     font-family: 'Games', sans-serif;
+    flex-grow: 1;
 }
 
 .navbar {
@@ -49,10 +54,19 @@
     font-family: 'Games', sans-serif;
 }
 
+nav {
+    position:absolute;
+    right:0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+
 #leaderboard-container {
     display: grid;
-    grid-template-rows: 2fr 1fr;
-    height: 100%;
+    /* grid-template-rows: 2fr 1fr; */
+    height: 100vh;
     text-align: center;
     position: relative;
     background-color: blueviolet;

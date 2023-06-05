@@ -1,17 +1,12 @@
 import React from 'react'
-export default function About() {
+export default function Signup() {
 
   return (
     <>
     <main>
-        <header>
-
       <h1>
-       ABOUT
+       User Signup
       </h1>
-
-        </header>
-     
       </main>
     </>
   )

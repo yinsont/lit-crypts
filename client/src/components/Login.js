@@ -1,17 +1,12 @@
 import React from 'react'
-export default function About() {
+export default function Login() {
 
   return (
     <>
     <main>
-        <header>
-
       <h1>
-       ABOUT
+       User Login
       </h1>
-
-        </header>
-     
       </main>
     </>
   )

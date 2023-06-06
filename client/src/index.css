@@ -136,8 +136,29 @@ a:hover{
     font-family: 'Games', sans-serif;
 }
 
-#signup {
+.Signup{
+    background-color: #9DB2BF;
+    width: 70vw;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid black;
+    box-shadow: 1px 1px 8px black;
+    border-radius: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
     font-family: 'Games', sans-serif;
+}
+
+.Signup-Form{
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 #login {
@@ -145,6 +166,7 @@ a:hover{
     font-size: 50px;
     color:black;
 }
+
 .label {
     display: block;
     font-size: larger;

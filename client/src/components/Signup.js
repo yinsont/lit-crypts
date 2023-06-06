@@ -8,12 +8,9 @@ const [lastName, setLastName] = useState('');
 const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
   return (
-    <>
-    <main>
-      <h1 id = 'signup'>
-       User Signup
-      </h1>
-        <form>
+    <div className = "Signup">
+      <h1>User Signup</h1>
+        <form className = "Signup-Form">
           <label className="label">Please enter your first name.</label>
           <input value = {firstName}type="text" className="input" />
 
@@ -29,7 +26,6 @@ const [password, setPassword] = useState('');
       <h2 id = 'login'>
         <Link to="/login">Already have an account? Login</Link>
       </h2>
-      </main>
-    </>
+    </div>
   )
 }

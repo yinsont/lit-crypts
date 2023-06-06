@@ -62,7 +62,7 @@ def makeTheMessage():
     for letter in messageCopy:
         if letter == ' ':
             cryptedMessage += letter
-        elif letter == "'":
+        elif letter == "'" or letter == "," or letter == "." or letter ==";" or letter == "-":
             cryptedMessage += letter
         else:
             print(f"{letter} : {theCode[letter.upper()]}")
@@ -70,7 +70,10 @@ def makeTheMessage():
     #     cryptedMessage.replace(letter, theCode[f"{letter.upper()}"])
     
     print(f"CRYPTED: {cryptedMessage} ")
-
+    # When trying to get the normal message, make a variable that is equal to the array and use sq bracket notation
+    #Ex) milkyway = makeTheMessage()
+    # print(milkyway[0]) -> cryptedMessage
+    # print(milkyway[1]) -> The Normal Message
     return cryptedMessage, messageCopy
 
 def randomAlphabetCode(alphabet = alphabet):

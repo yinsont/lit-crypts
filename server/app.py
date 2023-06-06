@@ -3,14 +3,26 @@
 # Standard library imports
 
 # Remote library imports
-# from flask import request
-# from flask_restful import Resource
 
 # Local imports
-from config import app, db, api
-from models import User, Recipe
-import ipdb
 
+from models import db
+# from models import User, Recipe
+from flask import Flask, session, abort, redirect, request
+from flask_migrate import Migrate
+from flask_restful import Api, Resource
+
+
+app = Flask(__name__)
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.json.compact = False
+
+migrate = Migrate(app, db)
+db.init_app(app)
+api = Api(app)
+
+import ipdb
 # Views go here!
 randomList = ["Rolling eyes fall down the dragon wall", "Poorly wired circuit", "", "Im that cat by the bar toasting to the good life", "Kill your friends guilt free"]
 randomizer = ["😂", "🗿", "💀", "🙄", "🤑", "👨🏿‍🌾", 
@@ -34,7 +46,7 @@ randomizer = ["😂", "🗿", "💀", "🙄", "🤑", "👨🏿‍🌾",
 
 alphabet = ["A", "B", "C", "D", "E", "F","G", "H", "I",
             "J", "K", "L", "M", "N", "O", "P", "Q","R",
-            "S", "T", "U", "V", "W", "X", "Y", "Z", "SPACE"]
+            "S", "T", "U", "V", "W", "X", "Y", "Z"]
 
 theCode = {}
 
@@ -50,8 +62,7 @@ def makeTheMessage():
     cryptedMessage = ""
     for letter in messageCopy:
         if letter == ' ':
-            print(f"{letter} : {theCode['SPACE']}")
-            cryptedMessage += theCode['SPACE']
+            cryptedMessage += letter
         elif letter == "'":
             cryptedMessage += letter
         else:
@@ -75,10 +86,9 @@ def randomAlphabetCode(alphabet = alphabet):
         
     # for key, value in theCode.items():        check the encryption
     #     print(f"{key} : {value}")
-    return "Tomatoes"
+    return "Tomatoes" #this return statement is literally serving 0 purpose
 
 
-ipdb.set_trace()
 # if __name__ == '__main__':
 #     app.run(port=5555, debug=True)
 

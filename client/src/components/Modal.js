@@ -1,5 +1,6 @@
 import React from 'react'
-
+import { Link } from "react-router-dom";
+import logo from "./Assets/favicon.ico"
 const MODAL_STYLES = {
     position: 'fixed',
     top: '50%',
@@ -26,7 +27,18 @@ export default function Modal({closeModal}){
         <>
             <div style={OVERLAY_STYLES}>
                 <div style = {MODAL_STYLES}>
+                    <h1>How to Play</h1>
+                    <p>Guess the cypher as quickly as possible!</p>
+                        <li>The correct quote is coded using emojis</li>
+                        <li>All instances of the correct letter will appear and turn green when inputted</li>
+                        <p>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
+                        <br></br>
+                    <h2>Examples</h2>
+                        <img src={logo}></img>
+                        <p>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
+                        <Link className="link" to='/login'>Login or signup to view and compare your scores!</Link>
                     <button onClick = {closeModal}>Close</button>
+                    
                 </div> 
             </div>
         </>

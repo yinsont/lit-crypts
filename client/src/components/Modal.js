@@ -36,7 +36,7 @@ export default function Modal({closeModal}){
                     <h2>Examples</h2>
                         <img src={logo}></img>
                         <p>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
-                        <Link className="link" to='/login'>Login or signup to view and compare your scores!</Link>
+                        <Link className="link" to='/signup'>Login or signup to view and compare your scores!</Link>
                     <button onClick = {closeModal}>Close</button>
                     
                 </div> 

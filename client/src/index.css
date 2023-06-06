@@ -133,3 +133,28 @@ a:hover{
     background-color: blueviolet;
     font-family: 'Games', sans-serif;
 }
+
+#signup {
+    font-family: 'Games', sans-serif;
+}
+
+#login {
+    font-family: 'Games', sans-serif;
+    font-size: 50px;
+    color:black;
+}
+.label {
+    display: block;
+    font-size: larger;
+    color: black;
+    padding: 5px;
+    font-family: 'Games', sans-serif;
+}
+
+.input {
+    font-size: larger;
+    padding: 5px;
+    margin: 2px;
+    font-family: 'Games', sans-serif;
+    background-color: #526D82;
+}

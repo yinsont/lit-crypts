@@ -11,10 +11,7 @@ export default function Dropdown() {
             About
             </Link>
             <Link className="link" to="/signup" exact="true">
-            Sign-up
-            </Link>
-            <Link className="link" to="/login" exact="true">
-            Login
+            Sign-up/Login
             </Link>
             <Link className="link" to="/leaderboard" exact="true">
             Leaderboard

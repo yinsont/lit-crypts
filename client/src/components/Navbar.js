@@ -1,10 +1,4 @@
 import { React, useState } from "react";
-// import { Link, Route, Routes } from 'react-router-dom'
-// import Home from "./Home.js"
-// import About from "./About.js"
-// import Login from "./Login.js"
-// import Signup from "./Signup.js"
-// import Leaderboard from "./Leaderboard.js"
 import * as RxIcons from "react-icons/rx";
 import Dropdown from "./Dropdown.js";
 import Modal from "./Modal.js";
@@ -18,12 +12,10 @@ export default function Navbar() {
   };
 
   const callModal = () => {
-    // console.log(1)
     setModal(!modal)
   }
 
   return (
-    // <div className="app">
     <>
       <header className="navbar">
 

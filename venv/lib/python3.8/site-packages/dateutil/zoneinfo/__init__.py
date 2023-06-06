@@ -5,16 +5,24 @@ import json
 from tarfile import TarFile
 from pkgutil import get_data
 from io import BytesIO
+from contextlib import closing
 
-from dateutil.tz import tzfile as _tzfile
+from dateutil.tz import tzfile
 
-__all__ = ["get_zonefile_instance", "gettz", "gettz_db_metadata"]
+__all__ = ["get_zonefile_instance", "gettz", "gettz_db_metadata", "rebuild"]
 
 ZONEFILENAME = "dateutil-zoneinfo.tar.gz"
 METADATA_FN = 'METADATA'
 
+# python2.6 compatability. Note that TarFile.__exit__ != TarFile.close, but
+# it's close enough for python2.6
+tar_open = TarFile.open
+if not hasattr(TarFile, '__exit__'):
+    def tar_open(*args, **kwargs):
+        return closing(TarFile.open(*args, **kwargs))
 
-class tzfile(_tzfile):
+
+class tzfile(tzfile):
     def __reduce__(self):
         return (gettz, (self._filename,))
 
@@ -30,15 +38,23 @@ def getzoneinfofile_stream():
 class ZoneInfoFile(object):
     def __init__(self, zonefile_stream=None):
         if zonefile_stream is not None:
-            with TarFile.open(fileobj=zonefile_stream) as tf:
-                self.zones = {zf.name: tzfile(tf.extractfile(zf), filename=zf.name)
-                              for zf in tf.getmembers()
-                              if zf.isfile() and zf.name != METADATA_FN}
+            with tar_open(fileobj=zonefile_stream, mode='r') as tf:
+                # dict comprehension does not work on python2.6
+                # TODO: get back to the nicer syntax when we ditch python2.6
+                # self.zones = {zf.name: tzfile(tf.extractfile(zf),
+                #               filename = zf.name)
+                #              for zf in tf.getmembers() if zf.isfile()}
+                self.zones = dict((zf.name, tzfile(tf.extractfile(zf),
+                                                   filename=zf.name))
+                                  for zf in tf.getmembers()
+                                  if zf.isfile() and zf.name != METADATA_FN)
                 # deal with links: They'll point to their parent object. Less
                 # waste of memory
-                links = {zl.name: self.zones[zl.linkname]
-                         for zl in tf.getmembers() if
-                         zl.islnk() or zl.issym()}
+                # links = {zl.name: self.zones[zl.linkname]
+                #        for zl in tf.getmembers() if zl.islnk() or zl.issym()}
+                links = dict((zl.name, self.zones[zl.linkname])
+                             for zl in tf.getmembers() if
+                             zl.islnk() or zl.issym())
                 self.zones.update(links)
                 try:
                     metadata_json = tf.extractfile(tf.getmember(METADATA_FN))
@@ -48,7 +64,7 @@ class ZoneInfoFile(object):
                     # no metadata in tar file
                     self.metadata = None
         else:
-            self.zones = {}
+            self.zones = dict()
             self.metadata = None
 
     def get(self, name, default=None):
@@ -74,7 +90,7 @@ class ZoneInfoFile(object):
 # timezone. Ugly, but adheres to the api.
 #
 # TODO: Remove after deprecation period.
-_CLASS_ZONE_INSTANCE = []
+_CLASS_ZONE_INSTANCE = list()
 
 
 def get_zonefile_instance(new_instance=False):

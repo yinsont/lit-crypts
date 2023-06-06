@@ -1,5 +1,5 @@
 from sqlalchemy_serializer import SerializerMixin
-from config import db
+from server import db
 from datetime import datetime
 import hashlib
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -8,7 +8,7 @@ from markdown import markdown
 import bleach
 from flask import current_app, request
 from flask_login import UserMixin, AnonymousUserMixin
-from . import db, login_manager
+from server import db, login_manager
 
 class Permission:
     FOLLOW = 1

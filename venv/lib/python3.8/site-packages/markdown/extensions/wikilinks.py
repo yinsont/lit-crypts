@@ -4,32 +4,34 @@ WikiLinks Extension for Python-Markdown
 
 Converts [[WikiLinks]] to relative links.
 
-See <https://Python-Markdown.github.io/extensions/wikilinks>
+See <https://pythonhosted.org/Markdown/extensions/wikilinks.html>
 for documentation.
 
 Original code Copyright [Waylan Limberg](http://achinghead.com/).
 
 All changes Copyright The Python Markdown Project
 
-License: [BSD](https://opensource.org/licenses/bsd-license.php)
+License: [BSD](http://www.opensource.org/licenses/bsd-license.php)
 
 '''
 
+from __future__ import absolute_import
+from __future__ import unicode_literals
 from . import Extension
-from ..inlinepatterns import InlineProcessor
-import xml.etree.ElementTree as etree
+from ..inlinepatterns import Pattern
+from ..util import etree
 import re
 
 
 def build_url(label, base, end):
     """ Build a url from the label, a base, and an end. """
     clean_label = re.sub(r'([ ]+_)|(_[ ]+)|([ ]+)', '_', label)
-    return '{}{}{}'.format(base, clean_label, end)
+    return '%s%s%s' % (base, clean_label, end)
 
 
 class WikiLinkExtension(Extension):
 
-    def __init__(self, **kwargs):
+    def __init__(self, *args, **kwargs):
         self.config = {
             'base_url': ['/', 'String to append to beginning or URL.'],
             'end_url': ['/', 'String to append to end of URL.'],
@@ -37,27 +39,27 @@ class WikiLinkExtension(Extension):
             'build_url': [build_url, 'Callable formats URL from label.'],
         }
 
-        super().__init__(**kwargs)
+        super(WikiLinkExtension, self).__init__(*args, **kwargs)
 
-    def extendMarkdown(self, md):
+    def extendMarkdown(self, md, md_globals):
         self.md = md
 
         # append to end of inline patterns
         WIKILINK_RE = r'\[\[([\w0-9_ -]+)\]\]'
-        wikilinkPattern = WikiLinksInlineProcessor(WIKILINK_RE, self.getConfigs())
+        wikilinkPattern = WikiLinks(WIKILINK_RE, self.getConfigs())
         wikilinkPattern.md = md
-        md.inlinePatterns.register(wikilinkPattern, 'wikilink', 75)
+        md.inlinePatterns.add('wikilink', wikilinkPattern, "<not_strong")
 
 
-class WikiLinksInlineProcessor(InlineProcessor):
+class WikiLinks(Pattern):
     def __init__(self, pattern, config):
-        super().__init__(pattern)
+        super(WikiLinks, self).__init__(pattern)
         self.config = config
 
-    def handleMatch(self, m, data):
-        if m.group(1).strip():
+    def handleMatch(self, m):
+        if m.group(2).strip():
             base_url, end_url, html_class = self._getMeta()
-            label = m.group(1).strip()
+            label = m.group(2).strip()
             url = self.config['build_url'](label, base_url, end_url)
             a = etree.Element('a')
             a.text = label
@@ -66,7 +68,7 @@ class WikiLinksInlineProcessor(InlineProcessor):
                 a.set('class', html_class)
         else:
             a = ''
-        return a, m.start(0), m.end(0)
+        return a
 
     def _getMeta(self):
         """ Return meta data or config data. """
@@ -83,5 +85,5 @@ class WikiLinksInlineProcessor(InlineProcessor):
         return base_url, end_url, html_class
 
 
-def makeExtension(**kwargs):  # pragma: no cover
-    return WikiLinkExtension(**kwargs)
+def makeExtension(*args, **kwargs):
+    return WikiLinkExtension(*args, **kwargs)

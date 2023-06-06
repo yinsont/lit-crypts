@@ -24,14 +24,7 @@ class weekday(object):
             return False
         return True
 
-    def __hash__(self):
-        return hash((
-          self.weekday,
-          self.n,
-        ))
-
-    def __ne__(self, other):
-        return not (self == other)
+    __hash__ = None
 
     def __repr__(self):
         s = ("MO", "TU", "WE", "TH", "FR", "SA", "SU")[self.weekday]
@@ -39,5 +32,3 @@ class weekday(object):
             return s
         else:
             return "%s(%+d)" % (s, self.n)
-
-# vim:ts=4:sw=4:et

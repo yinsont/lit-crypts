@@ -1,6 +1,5 @@
 import React from "react";
 import Navbar from "./Navbar.js";
-import "./app.css";
 import Home from "./Home.js";
 import { Link, Route, Routes } from "react-router-dom";
 import About from "./About.js";

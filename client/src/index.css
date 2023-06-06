@@ -80,6 +80,10 @@
     
 }
 
+#moon {
+    height: 2vw;
+    width: 2vw;
+}
 .Dropdown-Menu {
     position:relative;
     display: flex;

@@ -15,11 +15,14 @@ class User(db.Model, SerializerMixin):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String)
+    password = db.Column(db.String)
 
 class Leaderboard(db.Model, SerializerMixin):
     __tablename__ = "leaderboards"
     id = db.Column(db.Integer, primary_key = True)
     points = db.Column(db.Integer)
+
+    userscores = db.relationship("UserScores", backref = 'leaderboard')
 
 class Score(db.Model, SerializerMixin):
     __tablename__ = "scores"

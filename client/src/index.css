@@ -5,6 +5,7 @@
     margin-left: auto;
     margin-right: auto;
 }
+
 .Game-Display{
     background-color: #526D82;
     height: 60vh;
@@ -82,6 +83,7 @@
     height: 2vw;
     width: 2vw;
 }
+
 .Dropdown-Menu {
     position:relative;
     display: flex;
@@ -181,4 +183,15 @@ a:hover{
     margin: 2px;
     font-family: 'Games', sans-serif;
     background-color: #526D82;
+}
+
+h1.ui.header {
+    text-align: center;
+}
+div.ui.comments {
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: pink;
 }

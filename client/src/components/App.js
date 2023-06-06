@@ -1,13 +1,14 @@
 import React from "react";
 import Navbar from "./Navbar.js";
 import Home from "./Home.js";
-import { Link, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import About from "./About.js";
 import Login from "./Login.js";
 import Signup from "./Signup.js";
 import Leaderboard from "./Leaderboard.js";
 
 function App() {
+  
   return (
     <div>
       <Navbar />

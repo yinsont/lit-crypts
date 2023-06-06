@@ -23,7 +23,7 @@ db.init_app(app)
 api = Api(app)
 
 # Views go here!
-randomList = ["Rolling eyes fall down the dragon wall", "Poorly wired circuit", "", "Im that cat by the bar toasting to the good life", "Kill your friends guilt free"]
+randomList = ["Rolling eyes fall down the dragon wall", "Poorly wired circuit", "Tostinos pizza rolls are mid", "Im that cat by the bar toasting to the good life", "Kill your friends guilt free"]
 randomizer = ["😂", "🗿", "💀", "🙄", "🤑", "👨🏿‍🌾", 
               "🤵🏻", "🐸", "🦍", "🔫", "🤩", "🥶", 
               "🍕", "🧠", "🐱‍🏍", "💃🏻", "👨‍👩‍👧‍👦", "🎅", 

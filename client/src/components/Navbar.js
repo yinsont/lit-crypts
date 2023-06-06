@@ -31,7 +31,7 @@ export default function Navbar() {
         {modal ? <Modal closeModal = {() => setModal(false)}/> : null}
 
         <h1 id="title">Lit🔥 Crypts🧩</h1>
-        <button onClick={toggleDropDown} id="dropdown-button">
+        <button className = "Dropdown-Button" onClick={toggleDropDown} id="dropdown-button">
           {<RxIcons.RxHamburgerMenu />}
         </button>
       </header>

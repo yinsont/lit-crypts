@@ -1,5 +1,5 @@
 .Game {
-    background-color:antiquewhite;
+    
     /* display: flex; */
     justify-content: center;
     align-items: center;
@@ -8,24 +8,48 @@
     margin-right: auto;
 }
 .Game-Display{
-    background-color: cadetblue;
+    background-color: #526D82;
     height: 60vh;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     margin: 0px;
+    border: 2px solid black;
+    box-shadow: 1px 1px 8px black;
+    border-radius: 25px;
 }
 
 .Game-Keys{
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color:#9DB2BF;
+    border: 2px solid black;
+    box-shadow: 1px 1px 8px black;
+    border-radius: 10px;
 }
 
 .app {
     background-color: pink;
 
+}
+
+.Dropdown-Button{
+    background-color: #9DB2BF; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 10px;
+    transition-duration: 500ms;
+}
+
+.Dropdown-Button:hover{
+    background-color: #474f53;
 }
 #title {
     color: green;
@@ -44,24 +68,44 @@
     display: flex;
     gap: 1rem;
     height: 4rem;
-    border-bottom: 1px solid rgb(196, 196, 196);
-    box-shadow: 1px 1px 8px rgb(196, 196, 196);
+    border-bottom: 1px solid black;
+    box-shadow: 1px 1px 8px black;
     align-items: center;
     justify-content: center;
-    background-color: white;
+    background-color: #27374D;
     position: relative;
     top: 0;
     font-family: 'Games', sans-serif;
+    
 }
 
-nav {
-    position:absolute;
-    right:0;
+.Dropdown-Menu {
+    position:relative;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: center;
+    background-color:#526D82;
+    width: 10vw;
+    height: 10vw;
+    float: right;
+    justify-content: space-evenly;
+    /* transition-duration: 0.5s; */
 }
 
+.link {
+    margin: 10px;
+    transition-duration: 1s;
+}
+.link:hover {
+    background-color: rgb(75, 75, 124);
+}
+a{
+    /* padding: 10px; */
+    transition-duration:1s
+}
+a:hover{
+    background-color: green
+}
 
 #leaderboard-container {
     display: grid;

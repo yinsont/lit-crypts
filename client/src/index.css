@@ -18,8 +18,14 @@
     box-shadow: 1px 1px 8px black;
     border-radius: 25px;
     margin: 30px; 
+    flex-wrap: wrap;
 }
 
+.card {
+    background-color: brown;
+    padding: 5px;
+    margin: 5px;
+}
 .Game-Keys{
     display: flex;
     justify-content: center;

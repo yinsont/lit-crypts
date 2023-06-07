@@ -19,9 +19,22 @@
     border-radius: 25px;
     margin: 30px; 
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    /* justify-content: space-evenly; */
 }
 
+.Empty-Card{
+    background-color: transparent;
+    width: 3vw;
+    height: 7vh;
+    padding: 5px;
+    margin: 5px;
+    justify-content: center;
+    align-items: center;
+    /* border: 1px solid black;
+    box-shadow: 1px 1px 8px black; */
+    border-radius: 5px;
+    text-align: center;
+}
 .card {
     background-color: white;
     width: 3vw;

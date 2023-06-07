@@ -34,14 +34,14 @@ class Puzzle(db.Model, SerializerMixin):
     __tablename__ = 'puzzles'
 
     id = db.Column(db.Integer, primary_key=True)
-    key = db.Column(db.String)
+    key = db.Column(db.Enum)
     date_released = db.Column(db.DateTime)
     original = db.Column(db.String)
-    # partially_solved = db.Column(db.String) 
+    partially_solved = db.Column(db.String) 
 
     puzzle_scores = db.relationship("PuzzleScore", back_populates= "puzzle", cascade="all,delete")
 
-    serialize_only = ("id", "key", "original")
+    serialize_only = ("id", "key", "original", "partially_solved")
 
     def __repr__(self):
         return f'<Puzzle {self.id}: {self.id}>'
@@ -54,7 +54,7 @@ class User(db.Model, SerializerMixin):
     email = db.Column(db.String)
     password = db.Column(db.String)
 
-    puzzle_scores = db.relationship("PuzzleScore", back_populates= "user.id")
+    puzzle_scores = db.relationship("PuzzleScore", back_populates= "user")
 
     puzzles = association_proxy("puzzle_scores", "puzzle")
 

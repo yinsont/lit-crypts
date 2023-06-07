@@ -40,6 +40,11 @@
     border-radius: 5px;
     text-align: center;
 }
+.word {
+    display: flex;
+    margin-right: 30px;
+
+}
 .card {
     background-color: white;
     width: 3vw;

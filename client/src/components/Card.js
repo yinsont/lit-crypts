@@ -5,7 +5,7 @@ export default function CryptedCard({character}){
 
     return(
         <div className="card">
-            <h1>{character}</h1>
+            <h1>{character.toUpperCase()}</h1>
         </div>
     )
 }

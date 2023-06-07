@@ -1,8 +1,9 @@
 // import { Card } from "semantic-ui-react";
 import Card from "./Card";
 import KeyCard from "./KeyCard";
-import StopWatch from "./StopWatch/StopWatch.jsx";
 import Encryption from "./Encryption";
+import ScoreCard from "./ScoreCard";
+import {useState} from 'react'
 
 function Game() {
   let sentence = "food is the greatest thing known to man kind";
@@ -11,8 +12,14 @@ function Game() {
   let puzzle = sentence.split(" ");
 
   let keys = [...new Set(sentence)];
-  //   let output = puzzle.join("").split(" ");
-//   console.log("result", puzzle);
+  const [score, setScore] = useState(0);
+ 
+  function renderScore(score){
+    setScore(score)
+    console.log("score:", score)
+ }
+ 
+
   let letter = puzzle.map((w) => {
     return (
       <div className="word">
@@ -25,10 +32,9 @@ function Game() {
 
   return (
     <div className="Game">
+        <p id = "score">Final Score: {'\n'}
+        {score}</p>
       <div className="Game-Display">
-        {/* {puzzle.map((character) => {
-          return <Card character={character} />;
-        })} */}
         {letter}
       </div>
       <div className="Game-Keys">
@@ -37,10 +43,10 @@ function Game() {
             return <KeyCard character={character} />;
           })}
           <button>Submit</button>
-          <aside className ="timerStyle">
-            <StopWatch />
-          </aside>
         </form>
+        <aside className ="timerStyle">
+            <ScoreCard renderScore = {renderScore}/>
+        </aside>
       </div>
     </div>
   );

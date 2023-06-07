@@ -9,7 +9,6 @@ export default function Home( {children} ) {
 
     <main className = "Title">
       <Game />
-
       <Container style={{ margin: 20 }}>
 
         <Header as="h1">Comment Section 💬</Header>

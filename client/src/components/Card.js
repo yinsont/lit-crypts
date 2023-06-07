@@ -9,5 +9,6 @@ export default function CryptedCard({character}){
         <div className="card">
             <h1>{character.toUpperCase()}</h1>
         </div>
+
     )
 }

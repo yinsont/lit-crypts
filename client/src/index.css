@@ -138,13 +138,13 @@
 .link:hover {
     background-color: rgb(75, 75, 124);
 }
-a{
-    /* padding: 10px; */
+/* a{
+    padding: 10px;
     transition-duration:1s
 }
 a:hover{
     background-color: green
-}
+} */
 
 #leaderboard-container {
     display: grid;
@@ -229,3 +229,4 @@ div.ui.comments {
     margin-right: auto;
     background-color: pink;
 }
+

@@ -1,83 +1,51 @@
-// Javascript program for decoding the string
-// which generate using classical cipher
+function Encryption(keyword = "JOHN", ciphertext = "TAR IS FOUND HERE") {
+  const all_alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
-// Original Set of letters
-let plaintext = "1234567890,![]';<>$%#^@*&()ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+//   const keyword = "JOHN";
+  let keyword1 = keyword.toUpperCase();
+//   const ciphertext = "TAR IS FOUND HERE";
 
-// Function generates the encoded text
-export function encoder(key) {
-  let encoded = "";
-  let arr = new Array(26).fill(0);
+  // converts message to list
+  const ct = ciphertext.toUpperCase().split("");
 
-  // This loop inserts the keyword
-  // at the start of the encoded string
-  for (let i = 0; i < key.length; i++) {
-    if (key[i] >= "A" && key[i] <= "Z") {
-      // To check whether the character is inserted
-      // earlier in the encoded string or not
-      if (arr[key.charCodeAt(i) - 65] == 0) {
-        encoded += key[i];
-        arr[key.charCodeAt(i) - 65] = 1;
+  // removes default elements
+  const duplicates = (list) => {
+    let key = [];
+    for (let i = 0; i < list.length; i++) {
+      if (!key.includes(list[i])) {
+        key.push(list[i]);
       }
-    } else if (key[i] >= "a" && key[i] <= "z") {
-      if (arr[key.charCodeAt(i) - 97] == 0) {
-        encoded += String.fromCharCode(key.charCodeAt(i) - 32);
-        arr[key.charCodeAt(i) - 97] = 1;
-      }
+    }
+    return key;
+  };
+
+  keyword1 = duplicates(keyword1);
+
+  // Stores the encryption list
+  const encrypting = duplicates(keyword1.concat(all_alphabets));
+
+  // removes spaces from the encryption list
+  for (let i = 0; i < encrypting.length; i++) {
+    if (encrypting[i] === " ") {
+      encrypting.splice(i, 1);
     }
   }
 
-  // This loop inserts the remaining
-  // characters in the encoded string.
-  for (let i = 0; i < 26; i++) {
-    if (arr[i] == 0) {
-      arr[i] = 1;
-      encoded += String.fromCharCode(65 + i);
-    }
-  }
-  return encoded;
-}
-
-// This function will decode the message
-export function decipheredIt(msg, encoded) {
-  // Hold the position of every character (A-Z)
-  // from encoded string
-  let enc = new Map();
-  for (let i = 0; i < encoded.length; i++) {
-    enc[encoded[i]] = i;
-  }
-
-  let decipher = "";
-
-  // This loop deciphered the message.
-  // Spaces, special characters and numbers remain same.
-  for (let i = 0; i < msg.length; i++) {
-    if (msg[i] >= "a" && msg[i] <= "z") {
-      let pos = enc[msg.charCodeAt(i) - 32];
-      decipher += plaintext[pos];
-    } else if (msg[i] >= "A" && msg[i] <= "Z") {
-      let pos = enc[msg[i]];
-      decipher += plaintext[pos];
+  // maps each element of the message to the encryption list and stores it in ciphertext
+  let message = "";
+  for (let i = 0; i < ct.length; i++) {
+    if (ct[i] !== " ") {
+      message = message + all_alphabets[encrypting.indexOf(ct[i])];
     } else {
-      decipher += msg[i];
+      message = message + " ";
     }
   }
-  return decipher;
+  
+  
+  //   console.log("Keyword : ", keyword);
+  //   console.log("Original Text : ", ciphertext);
+  //   console.log("Crypted Text : ", message);
+  return message
 }
-
-// Driver code
-// Hold the Keyword
-let key = "walrus";
-console.log("Keyword : ", key);
-
-// Function call to generate encoded text
-let encoded = encoder(key);
-
-// Message that need to decode
-let message = "I LOVE KUBERNETES";
-console.log("Message before Deciphering : ", message);
-
-// Function call to print deciphered text
-console.log(decipheredIt(message, encoder(key))); //----encrypted sentence, comes out as str
-
-// This code is contributed by poojaagarwal2.
+// This code is contributed by lokeshpotta20.
+export default Encryption

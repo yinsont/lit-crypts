@@ -19,26 +19,54 @@
     border-radius: 25px;
     margin: 30px; 
     flex-wrap: wrap;
+    justify-content: space-evenly;
 }
 
 .card {
-    background-color: brown;
+    background-color: white;
+    width: 3vw;
+    height: 7vh;
     padding: 5px;
     margin: 5px;
-}
-.Game-Keys{
-    display: flex;
     justify-content: center;
     align-items: center;
+    border: 1px solid black;
+    box-shadow: 1px 1px 8px black;
+    border-radius: 5px;
+    text-align: center;
+}
+
+
+.Game-Keys{
     background-color:#9DB2BF;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
     border: 2px solid black;
     box-shadow: 1px 1px 8px black;
-    border-radius: 10px;
+    border-radius: 25px;
+    margin: 30px; 
+    flex-wrap: wrap;
+}
+
+.Game-Form{
+    width: 30vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    
+}
+.KeyCard {
+    width: 3vw;
+    height: 7vh
 }
 
 .app {
     background-color: pink;
-
 }
 
 .Dropdown-Button{
@@ -110,13 +138,13 @@
 .link:hover {
     background-color: rgb(75, 75, 124);
 }
-a{
-    /* padding: 10px; */
+/* a{
+    padding: 10px;
     transition-duration:1s
 }
 a:hover{
     background-color: green
-}
+} */
 
 #leaderboard-container {
     display: grid;
@@ -201,3 +229,4 @@ div.ui.comments {
     margin-right: auto;
     background-color: pink;
 }
+

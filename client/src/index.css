@@ -22,6 +22,11 @@
     /* justify-content: space-evenly; */
 }
 
+.timerStyle{
+    width: 5vh;
+    height: 5vh;
+    margin-left:10px;
+}
 .Empty-Card{
     background-color: transparent;
     width: 3vw;

@@ -1,4 +1,7 @@
 export default function KeyCard( {character} ){
+    if (character == ' '){
+        return null
+    }
     return(
         <div >
 

@@ -3,7 +3,7 @@ import Card from "./Card";
 import KeyCard from "./KeyCard";
 
 function Game(){
-    let sentence = 'foodisthegreatestthingknowntomankind'
+    let sentence = 'food is the greatest thing known to man kind'
     sentence = sentence.split('')
 
     let keys = [...new Set(sentence)];

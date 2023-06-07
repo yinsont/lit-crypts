@@ -1,4 +1,4 @@
-this is app.py: #!/usr/bin/env python3
+#!/usr/bin/env python3
 
 import os
 from datetime import datetime

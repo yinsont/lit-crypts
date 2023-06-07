@@ -1,99 +1,103 @@
-#!/usr/bin/env python3
+this is app.py: #!/usr/bin/env python3
 
-# Standard library imports
+import os
+from datetime import datetime
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+DATABASE = os.environ.get("DB_URI", f"sqlite:///{os.path.join(BASE_DIR, 'instance/app.db')}")
 
-# Remote library imports
-
-# Local imports
-
-from models import db
-# from models import User, Recipe
-from flask import Flask, session, abort, redirect, request
+from flask import Flask, make_response, jsonify, request
 from flask_migrate import Migrate
 from flask_restful import Api, Resource
 
+from models import db, Puzzle, User, PuzzleScore
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.json.compact = False
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 migrate = Migrate(app, db)
+
 db.init_app(app)
+
 api = Api(app)
 
-# Views go here!
-randomList = ["Rolling eyes fall down the dragon wall", "Poorly wired circuit", "Tostinos pizza rolls are mid", "Im that cat by the bar toasting to the good life", "Kill your friends guilt free"]
-randomizer = ["😂", "🗿", "💀", "🙄", "🤑", "👨🏿‍🌾", 
-              "🤵🏻", "🐸", "🦍", "🔫", "🤩", "🥶", 
-              "🍕", "🧠", "🐱‍🏍", "💃🏻", "👨‍👩‍👧‍👦", "🎅", 
-              "👃", "👮🏻‍♂️", "⚡", "🏃🏿‍♂️", "👩🏻‍🎤", "🌟", 
-              "🤳", "🎱", "🎈", "👑", "🌊", "🥏", 
-              "🎮", "💎", "🎩", "🔪", "🎁", "🥩",
-              "🧊", "🍆", "🧀", "🍩", "🚔", "🌕",
-              "🔥", "🌚", "⚓", "🗼", "✈", "☁",
-              "👧", "🌠", "🌋", "🌌", "🛐", "🅱",
-              "A", "B", "C", "D", "E", "F",
-              "G", "H", "I","J", "K", "L", 
-              "M", "N", "O", "P", "Q","R",
-              "S", "T", "U", "V", "W", "X", 
-              "Y", "Z", "1", "2", "3", "4",
-              "5", "6", "7", "8", "9", "0",
-              "!", "@", "#", "$", "%", "^",
-              "&", "*", "(", ")", "-", "+",
-              "<", ">", "/", "|", "💨", "💢"]
+@app.route('/')
+def home():
+    return ''
 
-alphabet = ["A", "B", "C", "D", "E", "F","G", "H", "I",
-            "J", "K", "L", "M", "N", "O", "P", "Q","R",
-            "S", "T", "U", "V", "W", "X", "Y", "Z"]
+class Users(Resource):
+    def get(self):
+        try:
+            users = User.query.all()
+            new_users = [user.to_dict(only=("id", "name", "email")) for user in users]
+            return new_users, 200
 
-theCode = {}
-
-def consoleTest():
-    randomAlphabetCode()
-    makeTheMessage()
-
-def makeTheMessage():
-    import random
-    randomNumber = random.randint(0, len(randomList) - 1)
-    message = randomList[randomNumber]
-    messageCopy = message
-    cryptedMessage = ""
-    for letter in messageCopy:
-        if letter == ' ':
-            cryptedMessage += letter
-        elif letter == "'" or letter == "," or letter == "." or letter ==";" or letter == "-":
-            cryptedMessage += letter
-        else:
-            print(f"{letter} : {theCode[letter.upper()]}")
-            cryptedMessage += theCode[letter.upper()]
-    #     cryptedMessage.replace(letter, theCode[f"{letter.upper()}"])
-    
-    print(f"CRYPTED: {cryptedMessage} ")
-    # When trying to get the normal message, make a variable that is equal to the array and use sq bracket notation
-    #Ex) milkyway = makeTheMessage()
-    # print(milkyway[0]) -> cryptedMessage
-    # print(milkyway[1]) -> The Normal Message
-    return cryptedMessage, messageCopy
-
-def randomAlphabetCode(alphabet = alphabet):
-    alphabetCopy = alphabet
-
-    for letter in alphabetCopy:
-        import random
-        randomNumber2 = random.randint(0, len(randomizer) - 1)
-        # print(f"{letter}: {randomizer[randomNumber2]}") uncomment this to see difference
-        while randomizer[randomNumber2] in theCode.values():
-            randomNumber2 = random.randint(0, len(randomizer) - 1)
-                
-        theCode[letter] = randomizer[randomNumber2]
+        except Exception as e: 
+            return {"error": f"Bad request: {str(e)}"}, 400
         
-    # for key, value in theCode.items():        check the encryption
-    #     print(f"{key} : {value}")
-    return "Tomatoes" #this return statement is literally serving 0 purpose
+    def post(self):
+        try: 
+            new_user = User(
+                name=request.json['name'],
+                email=request.json['email']
+            )
+            new_user.set_password(request.json['password'])
+            db.session.add(new_user)
+            db.session.commit()
+            
+            return new_user.to_dict(only=("id", "name", "email")), 201
+        except Exception as e: 
+            return { "error": f"400: Validation error: {str(e)}"}, 400
 
+api.add_resource(Users, "/users")
 
-# if __name__ == '__main__':
-#     app.run(port=5555, debug=True)
+class UsersById(Resource):
+    def get(self, id):
+        try: 
+            user = User.query.get(id).to_dict(only=("id", "name", "email", "puzzles"))
+            return user, 200
+        except: 
+            return {"error": "404: User not found"}, 404
 
+api.add_resource(UsersById, "/users/<int:id>")
 
+class Puzzles(Resource):
+    def get(self):
+        try: 
+            puzzles = [puzzle.to_dict() for puzzle in Puzzle.query.all()]
+            return puzzles, 200
+        except Exception as e:
+            return {'error': f'Bad request: {str(e)}'}, 400
+            
+api.add_resource(Puzzles, "/puzzles")
+
+class PuzzlesById(Resource):
+    def patch(self, id):
+        try:
+            puzzle = Puzzle.query.get(id)
+            
+            if request.json['key']:
+                setattr(puzzle, 'key', request.json['key'])
+                
+            db.session.add(puzzle)
+            db.session.commit()
+            
+            return puzzle.to_dict(), 202
+        except Exception as e:
+            return {"error": f"400: Validation error: {str(e)}"}, 400
+
+    # def delete(self, id):
+    #     try:
+    #         puzzle = Puzzle.query.get(id)
+            
+    #         db.session.delete(puzzle)
+    #         db.session.commit()
+            
+    #         return {}, 204
+    #     except: 
+    #         return {"error": "404: Puzzle not found"}, 404
+        
+api.add_resource(PuzzlesById, "/puzzles/<int:id>")
+
+if __name__ == '__main__':
+    app.run(port=5555, debug=True)

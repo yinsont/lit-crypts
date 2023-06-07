@@ -42,10 +42,7 @@ function Encryption(keyword = "JOHN", ciphertext = "TAR IS FOUND HERE") {
   }
   
   
-  //   console.log("Keyword : ", keyword);
-  //   console.log("Original Text : ", ciphertext);
-  //   console.log("Crypted Text : ", message);
   return message
 }
-// This code is contributed by lokeshpotta20.
+
 export default Encryption

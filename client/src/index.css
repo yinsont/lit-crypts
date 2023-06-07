@@ -19,13 +19,34 @@
     border-radius: 25px;
     margin: 30px; 
     flex-wrap: wrap;
-    /* justify-content: space-evenly; */
+}
+
+.timer {
+    margin-left: 100px;
+    margin-top: 17px;
 }
 
 .timerStyle{
     width: 5vh;
     height: 5vh;
-    margin-left:10px;
+}
+
+#finalScore {
+    font-family: 'Games', sans-serif;
+    text-align: center;
+    box-shadow: 1px 1px 8px black;
+    border-radius: 25px;
+}
+
+#score{
+    font-family: 'Games', sans-serif;
+    text-align: center;
+    box-shadow: 1px 1px 8px black;
+    border-radius: 50px;
+    width: 10vh;
+    background-color: red;
+    color: green;
+    font-size: 20px;
 }
 .Empty-Card{
     background-color: transparent;
@@ -43,7 +64,6 @@
 .word {
     display: flex;
     margin-right: 30px;
-
 }
 .card {
     background-color: white;
@@ -58,7 +78,6 @@
     border-radius: 5px;
     text-align: center;
 }
-
 
 .Game-Keys{
     background-color:#9DB2BF;

@@ -1,14 +1,22 @@
 import React, { useState } from "react";
-import "./StopWatch.css";
-import Timer from "../Timer/Timer";
-import ControlButtons from "../ControlButtons/ControlButtons";
- 
-function StopWatch() {
-    const [isActive, setIsActive] = useState(false);
-    const [isPaused, setIsPaused] = useState(true);
-    const [time, setTime] = useState(0);
- 
-    React.useEffect(() => {
+import Timer from "./Timer/Timer"
+import ControlButtons from "./ControlButtons/ControlButtons";
+
+function ScoreCard({renderScore}){
+const [isActive, setIsActive] = useState(false);
+const [isPaused, setIsPaused] = useState(true);
+const [time, setTime] = useState(0);
+
+let finalTime; 
+let finalScore;
+let maxScore = 1000;
+let maxTime = 300000
+
+console.log("final time:", finalTime)
+console.log("final score:", finalScore)
+console.log("time:", time)
+
+React.useEffect(() => {
         let interval = null;
  
         if (isActive && isPaused === false) {
@@ -27,19 +35,22 @@ function StopWatch() {
         setIsActive(true);
         setIsPaused(false);
     };
- 
     const handlePauseResume = () => {
         setIsPaused(!isPaused);
     };
- 
-    const handleReset = () => {
+     const handleReset = () => {
         setIsActive(false);
         setTime(0);
     };
- 
+
+    if (isPaused && time > 0) {
+        finalTime = time
+        finalScore = Math.floor(maxScore - (time / maxTime) *maxScore) 
+        renderScore(finalScore)
+    }
     return (
-        <div className="stop-watch">
-            <Timer time={time} />
+        <>
+            <Timer time= {time} />
             <ControlButtons
                 active={isActive}
                 isPaused={isPaused}
@@ -47,8 +58,11 @@ function StopWatch() {
                 handlePauseResume={handlePauseResume}
                 handleReset={handleReset}
             />
-        </div>
-    );
-}
- 
-export default StopWatch;
+            {/* <div>
+            <p id="finalScore">{finalScore}</p>
+            </div> */}
+        </>
+    )
+ }
+
+ export default ScoreCard;

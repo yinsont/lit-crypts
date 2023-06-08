@@ -12,10 +12,6 @@ let finalScore;
 let maxScore = 1000;
 let maxTime = 300000
 
-console.log("final time:", finalTime)
-console.log("final score:", finalScore)
-console.log("time:", time)
-
 React.useEffect(() => {
         let interval = null;
  

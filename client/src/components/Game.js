@@ -15,7 +15,6 @@ function Game() {
  
   function renderScore(score){
     setScore(score)
-    console.log("score:", score)
  }
  
 
@@ -31,7 +30,7 @@ function Game() {
 
   return (
     <div className="Game">
-        <p id = "score">Final Score: {'\n'}
+        <p id = "score">Score: {'\n'}
         {score}</p>
       <div className="Game-Display">
         {letter}

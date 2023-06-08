@@ -2,7 +2,7 @@ import React, { useState, useEffect }from 'react'
 import Game from "./Game.js"
 import MessageList from "./Comment/MessageList.js";
 import NewMessage from "./Comment/NewMessage.js";
-
+import "./Comment/Message.css"
 const testUser = { username: "Dfarlz97" };
 
 export default function Home( {children} ) {

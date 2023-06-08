@@ -17,7 +17,6 @@ function Game() {
     setScore(score)
  }
  
-
   let letter = puzzle.map((w) => {
     return (
       <div className="word">

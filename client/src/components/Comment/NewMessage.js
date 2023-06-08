@@ -29,6 +29,7 @@ function NewMessage({ currentUser, onAddMessage }) {
         type="text"
         name="body"
         autoComplete="off"
+        placeholder="Comment!"
         value={body}
         onChange={(e) => setBody(e.target.value)}
       />

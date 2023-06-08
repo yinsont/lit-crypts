@@ -2,102 +2,179 @@
 
 import os
 from datetime import datetime
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-DATABASE = os.environ.get("DB_URI", f"sqlite:///{os.path.join(BASE_DIR, 'instance/app.db')}")
-
-from flask import Flask, make_response, jsonify, request
+from flask import Flask, request, abort
 from flask_migrate import Migrate
-from flask_restful import Api, Resource
-
-from models import db, Puzzle, User, PuzzleScore
+from flask_restful import Api, Resource, reqparse
+from models import db, User, Puzzle, PuzzleScore
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///app.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-migrate = Migrate(app, db)
-
 db.init_app(app)
+migrate = Migrate(app, db)
 
 api = Api(app)
 
 @app.route('/')
 def home():
-    return ''
+    return 'Welcome to the puzzle app!'
 
 class Users(Resource):
     def get(self):
-        try:
-            users = User.query.all()
-            new_users = [user.to_dict(only=("id", "name", "email")) for user in users]
-            return new_users, 200
+        users = User.query.all()
+        return [user.to_dict() for user in users], 200
 
-        except Exception as e: 
-            return {"error": f"Bad request: {str(e)}"}, 400
-        
     def post(self):
-        try: 
-            new_user = User(
-                name=request.json['name'],
-                email=request.json['email']
-            )
-            new_user.set_password(request.json['password'])
-            db.session.add(new_user)
-            db.session.commit()
-            
-            return new_user.to_dict(only=("id", "name", "email")), 201
-        except Exception as e: 
-            return { "error": f"400: Validation error: {str(e)}"}, 400
+        parser = reqparse.RequestParser()
+        parser.add_argument('name', type=str, required=True)
+        parser.add_argument('email', type=str, required=True)
+        parser.add_argument('password', type=str, required=True)
+        args = parser.parse_args()
+
+        new_user = User(
+            name=args['name'],
+            email=args['email']
+        )
+        new_user.set_password(args['password'])
+        db.session.add(new_user)
+        db.session.commit()
+
+        return new_user.to_dict(only=("id", "name", "email")), 201
 
 api.add_resource(Users, "/users")
 
-class UsersById(Resource):
-    def get(self, id):
-        try: 
-            user = User.query.get(id).to_dict(only=("id", "name", "email", "puzzles"))
-            return user, 200
-        except: 
-            return {"error": "404: User not found"}, 404
+class UserById(Resource):
+    def get(self, user_id):
+        user = User.query.get_or_404(user_id)
+        return user.to_dict(), 200
 
-api.add_resource(UsersById, "/users/<int:id>")
+    def delete(self, user_id):
+        user = User.query.get_or_404(user_id)
+        db.session.delete(user)
+        db.session.commit()
+        return {}, 204
+
+    def patch(self, user_id):
+        user = User.query.get_or_404(user_id)
+        parser = reqparse.RequestParser()
+        parser.add_argument('name', type=str)
+        parser.add_argument('email', type=str)
+        args = parser.parse_args()
+
+        if args['name'] is not None:
+            user.name = args['name']
+        if args['email'] is not None:
+            user.email = args['email']
+        db.session.commit()
+
+        return user.to_dict(), 200
+
+api.add_resource(UserById, "/users/<int:user_id>")
 
 class Puzzles(Resource):
     def get(self):
-        try: 
-            puzzles = [puzzle.to_dict() for puzzle in Puzzle.query.all()]
-            return puzzles, 200
-        except Exception as e:
-            return {'error': f'Bad request: {str(e)}'}, 400
-            
+        puzzles = Puzzle.query.all()
+        return [puzzle.to_dict() for puzzle in puzzles], 200
+
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('name', type=str, required=True)
+        parser.add_argument('key', type=str, required=True)
+        args = parser.parse_args()
+
+        new_puzzle = Puzzle(
+            name=args['name'],
+            key=args['key']
+        )
+        db.session.add(new_puzzle)
+        db.session.commit()
+
+        return new_puzzle.to_dict(), 201
+
 api.add_resource(Puzzles, "/puzzles")
 
-class PuzzlesById(Resource):
-    def patch(self, id):
-        try:
-            puzzle = Puzzle.query.get(id)
-            
-            if request.json['key']:
-                setattr(puzzle, 'key', request.json['key'])
-                
-            db.session.add(puzzle)
-            db.session.commit()
-            
-            return puzzle.to_dict(), 202
-        except Exception as e:
-            return {"error": f"400: Validation error: {str(e)}"}, 400
+class PuzzleById(Resource):
+    def get(self, puzzle_id):
+        puzzle = Puzzle.query.get_or_404(puzzle_id)
+        return puzzle.to_dict(), 200
 
-    # def delete(self, id):
-    #     try:
-    #         puzzle = Puzzle.query.get(id)
-            
-    #         db.session.delete(puzzle)
-    #         db.session.commit()
-            
-    #         return {}, 204
-    #     except: 
-    #         return {"error": "404: Puzzle not found"}, 404
-        
-api.add_resource(PuzzlesById, "/puzzles/<int:id>")
+    def patch(self, puzzle_id):
+        puzzle = Puzzle.query.get_or_404(puzzle_id)
+        parser = reqparse.RequestParser()
+        parser.add_argument('key', type=str)
+        args = parser.parse_args()
+
+        if args['key'] is not None:
+            puzzle.key = args['key']
+        db.session.commit()
+
+        return puzzle.to_dict(), 200
+
+    def delete(self, puzzle_id):
+        puzzle = Puzzle.query.get_or_404(puzzle_id)
+        db.session.delete(puzzle)
+        db.session.commit()
+        return {}, 204
+
+api.add_resource(PuzzleById, "/puzzles/<int:puzzle_id>")
+
+class PuzzleScores(Resource):
+    def get(self):
+        scores = PuzzleScore.query.all()
+        return [score.to_dict() for score in scores], 200
+
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('score', type=int, required=True)
+        parser.add_argument('puzzle_id', type=int, required=True)
+        parser.add_argument('user_id', type=int, required=True)
+        args = parser.parse_args()
+
+        new_score = PuzzleScore(
+            score=args['score'],
+            puzzle_id=args['puzzle_id'],
+            user_id=args['user_id']
+        )
+        db.session.add(new_score)
+        db.session.commit()
+
+        return new_score.to_dict(), 201
+
+api.add_resource(PuzzleScores, "/puzzlescores")
+
+class PuzzleScoreById(Resource):
+    def get(self, score_id):
+        score = PuzzleScore.query.get_or_404(score_id)
+        return score.to_dict(), 200
+
+    def patch(self, score_id):
+        score = PuzzleScore.query.get_or_404(score_id)
+        parser = reqparse.RequestParser()
+        parser.add_argument('score', type=int)
+        args = parser.parse_args()
+
+        if args['score'] is not None:
+            score.score = args['score']
+        db.session.commit()
+
+        return score.to_dict(), 200
+
+    def delete(self, score_id):
+        score = PuzzleScore.query.get_or_404(score_id)
+        db.session.delete(score)
+        db.session.commit()
+        return {}, 204
+
+api.add_resource(PuzzleScoreById, "/puzzlescores/<int:score_id>")
+
+@app.errorhandler(404)
+def resource_not_found(e):
+    return {'message': 'Resource not found'}, 404
+
+@app.errorhandler(400)
+def bad_request(e):
+    return {'message': 'Bad request'}, 400
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

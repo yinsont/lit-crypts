@@ -1,20 +1,20 @@
-import React, { useState, useEffect }from 'react'
-import Game from "./Game.js"
+import React, { useState, useEffect } from "react";
+import Game from "./Game.js";
 import MessageList from "./Comment/MessageList.js";
 import NewMessage from "./Comment/NewMessage.js";
 import "./Comment/Message.css"
 const testUser = { username: "Dfarlz97" };
+// let inputs = {};
 
-export default function Home( {children} ) {
-
+export default function Home({ inputs }, { children }) {
   const [messages, setMessages] = useState([]);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-      fetch("http://localhost:5000/messages")
-        .then((r) => r.json())
-        .then((messages) => setMessages(messages));
-    }, []);
+    fetch("http://localhost:5000/messages")
+      .then((r) => r.json())
+      .then((messages) => setMessages(messages));
+  }, []);
 
   function handleAddMessage(newMessage) {
     setMessages([...messages, newMessage]);
@@ -41,8 +41,8 @@ export default function Home( {children} ) {
   );
 
   return (
-    <main className = "Title">
-      <Game />
+    <main className="Title">
+      <Game inputs={inputs} />
       <MessageList
         messages={displayedMessages}
         currentUser={testUser}
@@ -51,7 +51,5 @@ export default function Home( {children} ) {
       />
       <NewMessage currentUser={testUser} onAddMessage={handleAddMessage} />
     </main>
-    
-  )
+  );
 }
-

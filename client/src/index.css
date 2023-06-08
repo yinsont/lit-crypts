@@ -77,6 +77,35 @@
     text-align: center;
 }
 
+.card-red{
+    background-color: rgb(255, 77, 77);
+    width: 3vw;
+    height: 7vh;
+    padding: 5px;
+    margin: 5px;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    box-shadow: 1px 1px 8px black;
+    border-radius: 5px;
+    text-align: center;
+    transition-duration: 1s;
+}
+
+.card-green{
+    background-color: rgb(57, 255, 57);
+    width: 3vw;
+    height: 7vh;
+    padding: 5px;
+    margin: 5px;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    box-shadow: 1px 1px 8px black;
+    border-radius: 5px;
+    text-align: center;
+    transition-duration: 1s;
+}
 .Game-Keys{
     background-color:#9DB2BF;
     display: flex;

@@ -5,7 +5,7 @@ from datetime import datetime
 from flask import Flask, request, abort
 from flask_migrate import Migrate
 from flask_restful import Api, Resource, reqparse
-from models import db, User, Puzzle
+from models import db, User, Puzzle, PuzzleScore
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///app.db')
@@ -118,6 +118,55 @@ class PuzzleById(Resource):
         return {}, 204
 
 api.add_resource(PuzzleById, "/puzzles/<int:puzzle_id>")
+
+class PuzzleScores(Resource):
+    def get(self):
+        scores = PuzzleScore.query.all()
+        return [score.to_dict() for score in scores], 200
+
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('score', type=int, required=True)
+        parser.add_argument('puzzle_id', type=int, required=True)
+        parser.add_argument('user_id', type=int, required=True)
+        args = parser.parse_args()
+
+        new_score = PuzzleScore(
+            score=args['score'],
+            puzzle_id=args['puzzle_id'],
+            user_id=args['user_id']
+        )
+        db.session.add(new_score)
+        db.session.commit()
+
+        return new_score.to_dict(), 201
+
+api.add_resource(PuzzleScores, "/puzzlescores")
+
+class PuzzleScoreById(Resource):
+    def get(self, score_id):
+        score = PuzzleScore.query.get_or_404(score_id)
+        return score.to_dict(), 200
+
+    def patch(self, score_id):
+        score = PuzzleScore.query.get_or_404(score_id)
+        parser = reqparse.RequestParser()
+        parser.add_argument('score', type=int)
+        args = parser.parse_args()
+
+        if args['score'] is not None:
+            score.score = args['score']
+        db.session.commit()
+
+        return score.to_dict(), 200
+
+    def delete(self, score_id):
+        score = PuzzleScore.query.get_or_404(score_id)
+        db.session.delete(score)
+        db.session.commit()
+        return {}, 204
+
+api.add_resource(PuzzleScoreById, "/puzzlescores/<int:score_id>")
 
 @app.errorhandler(404)
 def resource_not_found(e):

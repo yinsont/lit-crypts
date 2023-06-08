@@ -270,3 +270,209 @@ div.ui.comments {
     background-color: pink;
 }
 
+input[type="text"] {
+    color: var(--main-font-color);
+    background-color: var(--bg-color-2);
+    font-size: 1rem;
+    border: none;
+    padding: 0.5em 1em;
+    transition: all 0.2s;
+}
+
+input[type="text"]::placeholder {
+    font-style: italic;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    background-color: var(--bg-color-3);
+}
+
+button[type="submit"] {
+    border: none;
+    font-size: 1rem;
+    width: 100px;
+    padding: 0.25rem;
+    background-color: var(--theme-primary);
+    color: var(--alt-font-color);
+}
+
+/* Header */
+header {
+    padding: 0.5rem;
+    color: var(--alt-font-color);
+    background: var(--theme-primary-gradient);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header h1 {
+    margin: 0;
+}
+
+.toggle-switch {
+    margin: 0.5rem;
+}
+
+.toggle-switch input {
+    display: none;
+}
+
+.toggle-switch label {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+    background-color: var(--bg-color-1);
+    border-radius: 20px;
+}
+
+.toggle-switch label::after {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    line-height: 20px;
+    padding-left: 2px;
+    border-radius: 50%;
+    background-color: var(--main-font-color);
+    top: 1px;
+    left: 1px;
+    transition: all 0.3s;
+}
+
+.toggle-switch input:checked+label::after {
+    left: 20px;
+}
+
+.toggle-switch input:checked+label {
+    background-color: var(--bg-color-1);
+}
+
+/* search */
+nav {
+    display: flex;
+}
+
+nav input[type="text"] {
+    flex: 1 1 auto;
+    text-align: center;
+}
+
+nav input[type="text"]:focus {
+    padding: 1rem;
+}
+
+/* chat list */
+.list {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: flex-end;
+}
+
+ul {
+    list-style: none;
+    overflow-y: auto;
+    padding-top: 2rem;
+}
+
+li {
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+    padding: 0.25rem 0.5rem 0.25rem;
+    position: relative;
+}
+
+li:hover {
+    border-top: 1px solid var(--bg-color-3);
+    border-bottom: 1px solid var(--bg-color-3);
+    background-color: var(--bg-color-2);
+}
+
+li span.user {
+    font-weight: 600;
+    margin-right: 0.5rem;
+    color: var(--alt-font-color);
+}
+
+li span.time {
+    font-size: 0.8rem;
+}
+
+li p {
+    padding: 0.25rem 0;
+    color: var(--alt-font-color);
+}
+
+li .reactions {
+    margin-top: 0.25rem;
+    display: flex;
+    align-items: center;
+}
+
+li button {
+    padding: 0.1rem 0.2rem;
+    border-radius: 5px;
+    border: 1px solid var(--bg-color-3);
+    background-color: var(--bg-color-2);
+    margin: 0 0.25rem;
+    cursor: pointer;
+}
+
+li .actions {
+    position: absolute;
+    top: 0;
+    transform: translateY(-50%);
+    right: 1rem;
+    display: none;
+}
+
+li:hover .actions {
+    display: block;
+}
+
+/* chat list edit */
+form.edit-message {
+    display: flex;
+    flex-direction: column;
+}
+
+form.edit-message input[type="text"] {
+    margin-top: 0.5rem;
+    border: 1px solid transparent;
+    background-color: var(--bg-color-3);
+}
+
+form.edit-message input[type="text"]:focus {
+    border: 1px solid var(--bg-color-2);
+}
+
+form.edit-message input[type="submit"] {
+    margin-top: 0.5rem;
+    width: 100px;
+}
+
+/* new message */
+form.new-message {
+    display: flex;
+}
+
+form.new-message input[type="text"] {
+    flex: 1 1 auto;
+}
+
+form.new-message input[type="text"]:focus {
+    padding: 1rem;
+}
+
+form.new-message input[type="submit"] {
+    opacity: 0.8;
+}
+
+form.new-message input[type="submit"]:focus {
+    outline: none;
+    opacity: 1;
+}

@@ -31,6 +31,5 @@ export default function Navbar() {
       </header>
       {dropDown ? <Dropdown /> : null}
     </>
-    // </div>
   );
 }

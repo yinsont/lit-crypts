@@ -58,9 +58,6 @@ React.useEffect(() => {
                 handlePauseResume={handlePauseResume}
                 handleReset={handleReset}
             />
-            {/* <div>
-            <p id="finalScore">{finalScore}</p>
-            </div> */}
         </>
     )
  }

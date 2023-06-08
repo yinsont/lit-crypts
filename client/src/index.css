@@ -56,8 +56,6 @@
     margin: 5px;
     justify-content: center;
     align-items: center;
-    /* border: 1px solid black;
-    box-shadow: 1px 1px 8px black; */
     border-radius: 5px;
     text-align: center;
 }
@@ -112,7 +110,7 @@
 }
 
 .Dropdown-Button{
-    background-color: #9DB2BF; /* Green */
+    background-color: #9DB2BF; 
     border: none;
     color: white;
     padding: 15px 32px;

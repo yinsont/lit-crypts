@@ -1,29 +1,62 @@
-import {React, useState} from 'react'
+import { React, useState } from "react";
 import Card from "./Card";
 import KeyCard from "./KeyCard";
 import StopWatch from "./StopWatch/StopWatch.jsx";
 import Encryption from "./Encryption";
 
 function Game() {
+  const [characterKeys, setCharacterKeys] = useState([]);
 
-    const [characterKey, setCharacterKey] = useState('')
-    
-    const changeCharacterKey = (e) => setCharacterKey(e.target.value.toUpperCase())
+  let sentence = "we live in a society";
+  let key = "THIS IS WORKING"
+  let encrypted = Encryption(key, sentence);
+  
+  let puzzle = encrypted.split(" ");
+  
+  // let objectPairs = []
+  let pairedObject = {};
 
-  let sentence = "food is the greatest thing known to man kind";
-  sentence = Encryption("JOHN", "TAR IS FOUND HERE");
+  sentence.split(' ')
+  encrypted.split(' ')
+  for (let i = 0; i < sentence.length; i++){
+    pairedObject[sentence[i].toUpperCase()] = encrypted[i]
+  }
+  console.log(pairedObject)
 
-  let puzzle = sentence.split(" ");
-
-  let keys = [...new Set(sentence)]; //make new array have one of each character
-
+  let keys = [...new Set(encrypted)]; //make new array have one of each character
+  
   let letter = puzzle.map((w) => {
     return (
       <div className="word">
         {w.split("").map((character) => (
-          <Card character={character} />
+          <Card character={character}/>
         ))}
       </div>
+    );
+  });
+  const changeCharacterKey = (index, value) => {
+    const updatedKeys = [...characterKeys];
+    // console.log(value)
+    if (typeof value.nativeEvent.data == "string") {
+      updatedKeys[index] = value.nativeEvent.data.toUpperCase();
+      console.log(updatedKeys[index]);
+    } else {
+      updatedKeys[index] = "";
+    }
+    // updatedKeys[index] = value.nativeEvent.data.toUpperCase();
+    setCharacterKeys(updatedKeys);
+  };
+
+  let inputkeys = keys.map((character, index) => {
+    // console.log(character, index)
+    return (
+      <KeyCard
+        value = {character}
+        key={index}
+        character={character}
+        changeCharacterKey={(value) => changeCharacterKey(index, value)}
+        characterKey={characterKeys[index] || ""}
+      />
     );
   });
 
@@ -42,9 +75,7 @@ function Game() {
       </div>
       <div className="Game-Keys">
         <form className="Game-Form">
-          {keys.map((character) => {
-            return <KeyCard character={character} changeCharacterKey = {changeCharacterKey} characterKey={characterKey}/>;
-          })}
+          {inputkeys}
           <button onClick={handleClick}>Submit</button>
           <aside className="timerStyle">
             <StopWatch />

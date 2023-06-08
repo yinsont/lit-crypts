@@ -1,7 +1,4 @@
-// import { Card } from "semantic-ui-react";
-
 export default function CryptedCard({character}){
-    // console.log(character)
     if (character == ' '){
         return <div className="Empty-Card"></div>
     } else {

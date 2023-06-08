@@ -77,6 +77,35 @@
     text-align: center;
 }
 
+.card-red{
+    background-color: rgb(255, 77, 77);
+    width: 3vw;
+    height: 7vh;
+    padding: 5px;
+    margin: 5px;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    box-shadow: 1px 1px 8px black;
+    border-radius: 5px;
+    text-align: center;
+    transition-duration: 1s;
+}
+
+.card-green{
+    background-color: rgb(57, 255, 57);
+    width: 3vw;
+    height: 7vh;
+    padding: 5px;
+    margin: 5px;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    box-shadow: 1px 1px 8px black;
+    border-radius: 5px;
+    text-align: center;
+    transition-duration: 1s;
+}
 .Game-Keys{
     background-color:#9DB2BF;
     display: flex;
@@ -243,30 +272,12 @@ a:hover{
     color:black;
 }
 
-.label {
-    display: block;
-    font-size: larger;
-    color: black;
-    padding: 5px;
-    font-family: 'Games', sans-serif;
+#YUHYEET {
+    width: 3vw;
+    height: 7vh;
+    background-color: #9DB2BF;
+    border: none;
 }
-
-.input {
-    font-size: larger;
-    padding: 5px;
-    margin: 2px;
-    font-family: 'Games', sans-serif;
-    background-color: #526D82;
+#Yuhyeet input[type="text"]:focus {
+    outline: none;
 }
-
-h1.ui.header {
-    text-align: center;
-}
-div.ui.comments {
-    justify-content: center;
-    align-items: center;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: pink;
-}
-

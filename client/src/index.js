@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import App from "./components/App";
-import CommentBox from "./components/CommentBox";
 
 const styleLink = document.createElement("link");
 styleLink.rel = "stylesheet";
@@ -16,7 +15,6 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
     <React.StrictMode>
       <BrowserRouter>
         <App>
-          <CommentBox />
         </App>
       </BrowserRouter>
     </React.StrictMode>

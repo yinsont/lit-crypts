@@ -7,7 +7,7 @@ import { useState } from "react";
 function Game({inputs}) {
   const [characterKeys, setCharacterKeys] = useState([]);
 
-  let sentence = "we live in a society";
+  let sentence = "oh fuck";
   let key = "THIS IS WORKING";
   let encrypted = Encryption(key, sentence);
 
@@ -36,16 +36,19 @@ function Game({inputs}) {
   const changeCharacterKey = (index, value, character) => {
     const updatedKeys = [...characterKeys];
     // console.log(value)
-    if (typeof value.nativeEvent.data == "string") {
-      updatedKeys[index] = value.nativeEvent.data.toUpperCase();
+    if ("undefined" in inputs) {
+      updatedKeys[index] = "";
+      
       // console.log(updatedKeys[index]);
     } else {
-      updatedKeys[index] = "";
+      updatedKeys[index] = value.nativeEvent.data.toUpperCase();
     }
     // updated  Keys[index] = value.nativeEvent.data.toUpperCase();
     setCharacterKeys(updatedKeys);
-    inputs[character] = updatedKeys[index];
-    console.log(inputs);
+    //assert(updatedKeys.length == characterKeys.length + 1)
+    //inputs[character] = updatedKeys[index];
+    console.log(updatedKeys);
+    
     //! character -> defaultChar
     //! <USER INPUT> -> currentChar
 

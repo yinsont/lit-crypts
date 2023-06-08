@@ -6,7 +6,7 @@ export default function KeyCard( {characterKey, character, changeCharacterKey} )
     //console.log(characterKey)
 
     if (character == ' '){
-        return 'space'
+        return <div id = "YUHYEET"/>
     }
     return(
         <div>

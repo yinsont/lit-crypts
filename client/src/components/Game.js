@@ -36,12 +36,11 @@ function Game({inputs}) {
   const changeCharacterKey = (index, value, character) => {
     const updatedKeys = [...characterKeys];
     // console.log(value)
-    if ("undefined" in inputs) {
-      updatedKeys[index] = "";
-      
+    if (typeof value.nativeEvent.data == "string") {
+      updatedKeys[index] = value.nativeEvent.data.toUpperCase();
       // console.log(updatedKeys[index]);
     } else {
-      updatedKeys[index] = value.nativeEvent.data.toUpperCase();
+      updatedKeys[index] = "";
     }
     // updated  Keys[index] = value.nativeEvent.data.toUpperCase();
     setCharacterKeys(updatedKeys);

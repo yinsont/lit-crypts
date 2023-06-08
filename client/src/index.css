@@ -271,3 +271,13 @@ a:hover{
     font-size: 50px;
     color:black;
 }
+
+#YUHYEET {
+    width: 3vw;
+    height: 7vh;
+    background-color: #9DB2BF;
+    border: none;
+}
+#Yuhyeet input[type="text"]:focus {
+    outline: none;
+}

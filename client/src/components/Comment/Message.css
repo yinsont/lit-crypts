@@ -52,6 +52,8 @@ li {
     border-bottom: 1px solid transparent;
     padding: 0.25rem 0.5rem 0.25rem;
     position: relative;
+    font-family: 'Comic Sans MS';
+    color: pink;
 }
 
 li:hover {

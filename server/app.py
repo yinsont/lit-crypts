@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python3
 
 import os
@@ -14,7 +13,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 migrate = Migrate(app, db)
 
-db.init_app(app) 
+db.init_app(app)
 
 api = Api(app)
 
@@ -33,7 +32,7 @@ class Users(Resource):
             name=request.json['name'],
             email=request.json['email']
         )
-        new_user.set_password(['password'])
+        new_user.set_password(request.json['password'])
         db.session.add(new_user)
         db.session.commit()
 
@@ -43,23 +42,21 @@ api.add_resource(Users, "/users")
 
 class UserById(Resource):
     def get(self, user_id):
-        try:
-            user = User.query.filter_by(user_id=id).first()
-            return user.to_dict(), 200
-        except:
-            return({"error": "404: User not found"}, 404)
+        user = User.query.filter_by(id=user_id).first()
+        if user is None:
+            return {"error": "404: User not found"}, 404
+        return user.to_dict(), 200
 
     def delete(self, user_id):
-        try:
-            user = User.query.filter_by(user_id=id).first()
-            db.session.delete(user)
-            db.session.commit()
-            return {}, 204
-        except:
-            return({"error": "404: Episode not found"}, 404)
+        user = User.query.filter_by(id=user_id).first()
+        if user is None:
+            return {"error": "404: User not found"}, 404
+        db.session.delete(user)
+        db.session.commit()
+        return {}, 204
 
     def patch(self, user_id):
-        user = User.query.filter_by(user_id)
+        user = User.query.filter_by(id=user_id).first()
         parser = reqparse.RequestParser()
         parser.add_argument('name', type=str)
         parser.add_argument('email', type=str)
@@ -73,7 +70,7 @@ class UserById(Resource):
 
         return user.to_dict(), 200
 
-api.add_resource(UserById, "/users/<int:id>")
+api.add_resource(UserById, "/users/<int:user_id>")
 
 class Puzzles(Resource):
     def get(self):
@@ -95,11 +92,13 @@ api.add_resource(Puzzles, "/puzzles")
 
 class PuzzleById(Resource):
     def get(self, puzzle_id):
-        puzzle = Puzzle.query.filter_by(puzzle_id=id)
+        puzzle = Puzzle.query.filter_by(id=puzzle_id).first()
+        if puzzle is None:
+            return {"error": "404: Puzzle not found"}, 404
         return puzzle.to_dict(), 200
 
     def patch(self, puzzle_id):
-        puzzle = Puzzle.query.filter_by(puzzle_id=id)
+        puzzle = Puzzle.query.filter_by(id=puzzle_id).first()
         parser = reqparse.RequestParser()
         parser.add_argument('key', type=str)
         args = parser.parse_args()
@@ -111,7 +110,9 @@ class PuzzleById(Resource):
         return puzzle.to_dict(), 200
 
     def delete(self, puzzle_id):
-        puzzle = Puzzle.query.filter_by(puzzle_id=id)
+        puzzle = Puzzle.query.filter_by(id=puzzle_id).first()
+        if puzzle is None:
+            return {"error": "404: Puzzle not found"}, 404
         db.session.delete(puzzle)
         db.session.commit()
         return {}, 204
@@ -139,11 +140,13 @@ api.add_resource(PuzzleScores, "/puzzlescores")
 
 class PuzzleScoreById(Resource):
     def get(self, score_id):
-        score = PuzzleScore.query.filter_by(score_id=id)
+        score = PuzzleScore.query.filter_by(id=score_id).first()
+        if score is None:
+            return {"error": "404: Score not found"}, 404
         return score.to_dict(), 200
 
     def patch(self, score_id):
-        score = PuzzleScore.query.filter_by(score_id=id)
+        score = PuzzleScore.query.filter_by(id=score_id).first()
         parser = reqparse.RequestParser()
         parser.add_argument('score', type=int)
         args = parser.parse_args()
@@ -155,7 +158,9 @@ class PuzzleScoreById(Resource):
         return score.to_dict(), 200
 
     def delete(self, score_id):
-        score = PuzzleScore.query.filter_by(score_id=id)
+        score = PuzzleScore.query.filter_by(id=score_id).first()
+        if score is None:
+            return {"error": "404: Score not found"}, 404
         db.session.delete(score)
         db.session.commit()
         return {}, 204

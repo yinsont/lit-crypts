@@ -3,6 +3,7 @@ import GuessForm from "./GuessForm";
 import Encryption from "./Encryption";
 import ScoreCard from "./ScoreCard";
 import { useState } from "react";
+import Options from "./Options";
 
 function Game({ inputs }) {
   const [guess, setGuess] = useState("");
@@ -12,7 +13,7 @@ function Game({ inputs }) {
     console.log(value)
   };
 
-  let sentence = "oh fuck";
+  let sentence = "You are the shuckiest shuck faced shuck in the world";
   let key = "THIS IS WORKING";
   let encrypted = Encryption(key, sentence);
 
@@ -41,13 +42,16 @@ function Game({ inputs }) {
   // puzzle = puzzle.split('')
   let new_puzzle = puzzle.join("");
   new_puzzle = new_puzzle.split("");
-  const keySelect = (puzzled) => {
-    const options = new_puzzle.map((key) => (
-      <option key={key} value={key}>
-        {key}
-      </option>
-    ));
+  console.log(new_puzzle) //! ['F', 'B', 'P', 'V', 'M', 'H']
 
+  const keySelect = (puzzled) => {
+    const options = [];
+    for (key in puzzled) {
+      options.push(
+        <Options key = {key} value = {new_puzzle[key]}/>
+      );
+    }
+  
     return options;
   };
 

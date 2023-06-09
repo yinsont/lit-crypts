@@ -2,13 +2,23 @@ import CryptedCard from "./CryptedCard";
 import GuessForm from "./GuessForm";
 import Encryption from "./Encryption";
 import ScoreCard from "./ScoreCard";
-import { useState } from "react";
-import Options from "./Options";
-import Quote from "./Quote"
+import { useState, useEffect } from "react";
 
-function Game({ inputs }) {
+function Game() {
 
-  let sentence = "WHY YOU NO WORK";
+  const [quote, setQuote] = useState('');
+
+let min = 0
+let max = 1643
+let index = Math.random() * (max - min) + min
+index = parseInt(index)
+  useEffect(() => {
+    fetch('http://127.0.0.1:5555/quote')
+    .then(response => response.json())
+    .then(data => setQuote(data[index].text));
+  }, []);
+
+  let sentence = '';
   let key = "THIS IS WORKING";
   let encrypted = Encryption(key, sentence);
 
@@ -36,8 +46,7 @@ function Game({ inputs }) {
   new_puzzle = new_puzzle.split("");
   // console.log(new_puzzle) //! ['F', 'B', 'P', 'V', 'M', 'H']
 
-
-  let letter = puzzle.map((w) => {
+  let letter = Array.from(quote).map((w) => {
     // game display characters
     return (
       <div className="word">
@@ -48,10 +57,9 @@ function Game({ inputs }) {
     );
   });
 
-
   return (
     <div className="Game">
-      <Quote />
+
       <p id="score">
         Score: {"\n"}
         {score}

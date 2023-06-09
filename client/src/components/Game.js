@@ -4,6 +4,7 @@ import Encryption from "./Encryption";
 import ScoreCard from "./ScoreCard";
 import { useState } from "react";
 import Options from "./Options";
+import Quote from "./Quote"
 
 function Game({ inputs }) {
 
@@ -50,6 +51,7 @@ function Game({ inputs }) {
 
   return (
     <div className="Game">
+      <Quote />
       <p id="score">
         Score: {"\n"}
         {score}

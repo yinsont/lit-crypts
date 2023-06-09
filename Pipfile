@@ -38,6 +38,8 @@ WTForms="2.1"
 requests = "*"
 jsonify = "*"
 cors = "*"
+openai = "*"
+gradio = "*"
 
 [dev-packages]
 

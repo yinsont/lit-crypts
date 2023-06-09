@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python3
 
 import os
@@ -8,17 +9,18 @@ from flask_restful import Api, Resource, reqparse
 from models import db, User, Puzzle, PuzzleScore
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///app.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db.init_app(app)
 migrate = Migrate(app, db)
+
+db.init_app(app) 
 
 api = Api(app)
 
 @app.route('/')
 def home():
-    return 'Welcome to the puzzle app!'
+    return ''
 
 class Users(Resource):
     def get(self):
@@ -26,17 +28,12 @@ class Users(Resource):
         return [user.to_dict() for user in users], 200
 
     def post(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('name', type=str, required=True)
-        parser.add_argument('email', type=str, required=True)
-        parser.add_argument('password', type=str, required=True)
-        args = parser.parse_args()
 
         new_user = User(
-            name=args['name'],
-            email=args['email']
+            name=request.json['name'],
+            email=request.json['email']
         )
-        new_user.set_password(args['password'])
+        new_user.set_password(['password'])
         db.session.add(new_user)
         db.session.commit()
 
@@ -46,17 +43,23 @@ api.add_resource(Users, "/users")
 
 class UserById(Resource):
     def get(self, user_id):
-        user = User.query.get_or_404(user_id)
-        return user.to_dict(), 200
+        try:
+            user = User.query.filter_by(user_id=id).first()
+            return user.to_dict(), 200
+        except:
+            return({"error": "404: User not found"}, 404)
 
     def delete(self, user_id):
-        user = User.query.get_or_404(user_id)
-        db.session.delete(user)
-        db.session.commit()
-        return {}, 204
+        try:
+            user = User.query.filter_by(user_id=id).first()
+            db.session.delete(user)
+            db.session.commit()
+            return {}, 204
+        except:
+            return({"error": "404: Episode not found"}, 404)
 
     def patch(self, user_id):
-        user = User.query.get_or_404(user_id)
+        user = User.query.filter_by(user_id)
         parser = reqparse.RequestParser()
         parser.add_argument('name', type=str)
         parser.add_argument('email', type=str)
@@ -70,7 +73,7 @@ class UserById(Resource):
 
         return user.to_dict(), 200
 
-api.add_resource(UserById, "/users/<int:user_id>")
+api.add_resource(UserById, "/users/<int:id>")
 
 class Puzzles(Resource):
     def get(self):
@@ -78,14 +81,10 @@ class Puzzles(Resource):
         return [puzzle.to_dict() for puzzle in puzzles], 200
 
     def post(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('name', type=str, required=True)
-        parser.add_argument('key', type=str, required=True)
-        args = parser.parse_args()
 
         new_puzzle = Puzzle(
-            name=args['name'],
-            key=args['key']
+            name=request.json['name'],
+            key=request.json['key']
         )
         db.session.add(new_puzzle)
         db.session.commit()
@@ -96,11 +95,11 @@ api.add_resource(Puzzles, "/puzzles")
 
 class PuzzleById(Resource):
     def get(self, puzzle_id):
-        puzzle = Puzzle.query.get_or_404(puzzle_id)
+        puzzle = Puzzle.query.filter_by(puzzle_id=id)
         return puzzle.to_dict(), 200
 
     def patch(self, puzzle_id):
-        puzzle = Puzzle.query.get_or_404(puzzle_id)
+        puzzle = Puzzle.query.filter_by(puzzle_id=id)
         parser = reqparse.RequestParser()
         parser.add_argument('key', type=str)
         args = parser.parse_args()
@@ -112,7 +111,7 @@ class PuzzleById(Resource):
         return puzzle.to_dict(), 200
 
     def delete(self, puzzle_id):
-        puzzle = Puzzle.query.get_or_404(puzzle_id)
+        puzzle = Puzzle.query.filter_by(puzzle_id=id)
         db.session.delete(puzzle)
         db.session.commit()
         return {}, 204
@@ -125,16 +124,11 @@ class PuzzleScores(Resource):
         return [score.to_dict() for score in scores], 200
 
     def post(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('score', type=int, required=True)
-        parser.add_argument('puzzle_id', type=int, required=True)
-        parser.add_argument('user_id', type=int, required=True)
-        args = parser.parse_args()
 
         new_score = PuzzleScore(
-            score=args['score'],
-            puzzle_id=args['puzzle_id'],
-            user_id=args['user_id']
+            score=request.json['score'],
+            puzzle_id=request.json['puzzle_id'],
+            user_id=request.json['user_id']
         )
         db.session.add(new_score)
         db.session.commit()
@@ -145,11 +139,11 @@ api.add_resource(PuzzleScores, "/puzzlescores")
 
 class PuzzleScoreById(Resource):
     def get(self, score_id):
-        score = PuzzleScore.query.get_or_404(score_id)
+        score = PuzzleScore.query.filter_by(score_id=id)
         return score.to_dict(), 200
 
     def patch(self, score_id):
-        score = PuzzleScore.query.get_or_404(score_id)
+        score = PuzzleScore.query.filter_by(score_id=id)
         parser = reqparse.RequestParser()
         parser.add_argument('score', type=int)
         args = parser.parse_args()
@@ -161,7 +155,7 @@ class PuzzleScoreById(Resource):
         return score.to_dict(), 200
 
     def delete(self, score_id):
-        score = PuzzleScore.query.get_or_404(score_id)
+        score = PuzzleScore.query.filter_by(score_id=id)
         db.session.delete(score)
         db.session.commit()
         return {}, 204

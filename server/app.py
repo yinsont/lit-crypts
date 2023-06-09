@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
-
 import os
 from datetime import datetime
-from flask import Flask, request, abort
+from flask import Flask, request, abort, jsonify
 from flask_migrate import Migrate
 from flask_restful import Api, Resource, reqparse
 from models import db, User, Puzzle, PuzzleScore
+import requests
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -20,6 +22,14 @@ api = Api(app)
 @app.route('/')
 def home():
     return ''
+
+@app.route('/quote')
+def fetch_quote():
+    url = 'https://type.fit/api/quotes'
+    params = {'key':'value'}
+    r = requests.get(url = url, params = params) 
+    response = r.json()
+    return jsonify(response)
 
 class Users(Resource):
     def get(self):

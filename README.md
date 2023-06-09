@@ -350,3 +350,5 @@ game font - https://www.cdnfonts.com/games.font
 dark-mode - https://www.makeuseof.com/how-to-add-dark-mode-to-a-react-application/
 
 import { Card } from "semantic-ui-react";
+
+quote api: https://type.fit/api/quotes

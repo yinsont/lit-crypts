@@ -1,11 +1,16 @@
 import Card from "./Card";
-import KeyCard from "./KeyCard";
+import GuessForm from "./GuessForm";
 import Encryption from "./Encryption";
 import ScoreCard from "./ScoreCard";
 import { useState } from "react";
 
-function Game({inputs}) {
-  const [characterKeys, setCharacterKeys] = useState([]);
+function Game({ inputs }) {
+  const [guess, setGuess] = useState("");
+
+  const handleGuess = (value) => {
+    setGuess(value);
+    console.log(value)
+  };
 
   let sentence = "oh fuck";
   let key = "THIS IS WORKING";
@@ -32,47 +37,19 @@ function Game({inputs}) {
   function renderScore(score) {
     setScore(score);
   }
+  //
+  // puzzle = puzzle.split('')
+  let new_puzzle = puzzle.join("");
+  new_puzzle = new_puzzle.split("");
+  const keySelect = (puzzled) => {
+    const options = new_puzzle.map((key) => (
+      <option key={key} value={key}>
+        {key}
+      </option>
+    ));
 
-  const changeCharacterKey = (index, value, character) => {
-    const updatedKeys = [...characterKeys];
-    // console.log(value)
-    if (typeof value.nativeEvent.data == "string") {
-      updatedKeys[index] = value.nativeEvent.data.toUpperCase();
-      // console.log(updatedKeys[index]);
-    } else {
-      updatedKeys[index] = "";
-    }
-    // updated  Keys[index] = value.nativeEvent.data.toUpperCase();
-    setCharacterKeys(updatedKeys);
-    //assert(updatedKeys.length == characterKeys.length + 1)
-    //inputs[character] = updatedKeys[index];
-    console.log(updatedKeys);
-    
-    //! character -> defaultChar
-    //! <USER INPUT> -> currentChar
-
-    //! charTable = {defaultChar: currentChar}
-
-    //! charTable["E"]
-    // console.log('character', character)
+    return options;
   };
-
-  let inputkeys = keys.map((character, index) => {
-    //input field buttons
-    // console.log(character, index)
-
-    return (
-      <KeyCard
-        value={character}
-        key={index}
-        character={character}
-        changeCharacterKey={(value) =>
-          changeCharacterKey(index, value, character.toUpperCase())
-        }
-        characterKey={characterKeys[index] || ""}
-      />
-    );
-  });
 
   let letter = puzzle.map((w) => {
     // game display characters
@@ -94,7 +71,12 @@ function Game({inputs}) {
       <div className="Game-Display">{letter}</div>
       <div className="Game-Keys">
         <form className="Game-Form">
-          {inputkeys}
+          <select>
+            <option></option>
+            {keySelect(new_puzzle)}
+          </select>
+
+          <GuessForm handleGuess={handleGuess} />
           <button>Submit</button>
         </form>
         <aside className="timerStyle">

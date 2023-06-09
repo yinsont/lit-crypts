@@ -11,6 +11,10 @@ function Game() {
 let min = 0
 let max = 1643
 let index = Math.random() * (max - min) + min
+
+function removeSpecialCharacters(str) {
+    return str.replace(/[^\w\s]/gi, '');
+  }
 index = parseInt(index)
   useEffect(() => {
     fetch('http://127.0.0.1:5555/quote')
@@ -18,7 +22,7 @@ index = parseInt(index)
     .then(data => setQuote(data[index].text));
   }, []);
 
-  let sentence = '';
+  let sentence = removeSpecialCharacters(quote);
   let key = "THIS IS WORKING";
   let encrypted = Encryption(key, sentence);
 
@@ -46,7 +50,9 @@ index = parseInt(index)
   new_puzzle = new_puzzle.split("");
   // console.log(new_puzzle) //! ['F', 'B', 'P', 'V', 'M', 'H']
 
-  let letter = Array.from(quote).map((w) => {
+
+  // LOOK AT THIS FUCKERS
+  let letter = Array.from(puzzle).map((w) => {
     // game display characters
     return (
       <div className="word">

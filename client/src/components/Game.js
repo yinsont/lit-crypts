@@ -3,12 +3,22 @@ import GuessForm from "./GuessForm";
 import Encryption from "./Encryption";
 import ScoreCard from "./ScoreCard";
 import { useState } from "react";
-import Options from "./Options";
 import Quote from "./Quote"
 
 function Game({ inputs }) {
 
-  let sentence = "WHY YOU NO WORK";
+  const [answerSubmition, setAnswerSubmition] = useState({})
+  function  handleAnswerSubmition(value){
+    setAnswerSubmition(value)
+    console.log(value)
+  }
+
+  function removeSpecialCharacters(str) {
+    return str.replace(/[^\w\s]/gi, '');
+  }
+  let sentence = "HOLY! MOTHERF***ing S**t #tightaf";
+
+  sentence = removeSpecialCharacters(sentence)
   let key = "THIS IS WORKING";
   let encrypted = Encryption(key, sentence);
 
@@ -58,7 +68,7 @@ function Game({ inputs }) {
       </p>
       <div className="Game-Display">{letter}</div>
       <div className="Game-Keys">
-        <GuessForm puzzle = {encrypted.split(' ')}></GuessForm>
+        <GuessForm puzzle = {encrypted.split(' ')} handleAnswerSubmition = {handleAnswerSubmition}></GuessForm>
         <aside className="timerStyle">
           <ScoreCard renderScore={renderScore} />
         </aside>

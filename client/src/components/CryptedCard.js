@@ -3,7 +3,10 @@ export default function CryptedCard({ character, value }) {
   // console.log(value)
 //   console.log(character, value);
 //   console.log(value);
-  if (character == " ") {
+
+
+  if (character == " "){
+        
     return <div className="Empty-Card"></div>;
   } else if (character == value) {
     // || character == input.toUpperCase()

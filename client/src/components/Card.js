@@ -1,4 +1,4 @@
-export default function CryptedCard({character, value, input = 'n'}){
+export default function CryptedCard({character, value, input = 'b'}){
     // console.log(value)
     if (character == ' '){
         return <div className="Empty-Card"></div>

@@ -17,11 +17,11 @@ function removeSpecialCharacters(str) {
   }
 index = parseInt(index)
   useEffect(() => {
-    fetch('http://127.0.0.1:5555/quote')
+    fetch('https://type.fit/api/quotes')
     .then(response => response.json())
     .then(data => setQuote(data[index].text));
   }, []);
-
+  console.log(quote)
   let sentence = removeSpecialCharacters(quote);
   let key = "THIS IS WORKING";
   let encrypted = Encryption(key, sentence);

@@ -1,7 +1,8 @@
-export default function CryptedCard({ character, value, input = 'ABCDE' }) {
-  if (character === " ") {
+export default function CryptedCard({ character, value, input = 't' }) {
+  console.log(character, value)
+  if (character == " ") {
     return <div className="Empty-Card"></div>;
-  } else if (input.includes(character)) {
+  } else if ((character == value) || (input.toUpperCase() == value)){
     return (
       <div className="card-green" value={value}>
         <h1>{character.toUpperCase()}</h1>

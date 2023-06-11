@@ -1,88 +1,80 @@
-import random
-from random import randint, choice as rc
-
-from faker import Faker
-
+from models import db, User, Puzzle, Puzzlescore, Message
 from app import app
-from models import db, User, Puzzle, Puzzlescore
 
-fake = Faker()
-
-# num = random.randint(0,1000)
+NUM_USERS = 10
+NUM_PUZZLES = 10
+NUM_SCORES = 10
+NUM_MESSAGES = 10
 
 def create_users():
     users = []
-    usernames = []
-    for _ in range(150):
-        user = fake.name()
-        while user in usernames:
-            user = fake.name()
-        usernames.append(user)
 
+    for i in range(NUM_USERS):
         u = User(
-            user=user,
+            username=f'user{i}',
+            email=f'user{i}@example.com',
+            password=f'password{i}'
         )
+        db.session.add(u)
         users.append(u)
 
     return users
 
 def create_puzzles():
     puzzles = []
-    ids = set()
-    while len(puzzles) < 150:
-        num = random.randint(0, 150)
-        if num not in ids:
-            ids.add(num)
-            p = Puzzle(
-                id=num,
-            )
-            puzzles.append(p)
+
+    for i in range(NUM_PUZZLES):
+        p = Puzzle()
+        db.session.add(p)
+        puzzles.append(p)
 
     return puzzles
 
+def create_scores(users, puzzles):
+    scores = []
 
-def create_puzzlescores(puzzles, users):
-    puzzlescores = []
-    for _ in range(50):
-        num = random.randint(0, 150)
-        puzzle = rc(puzzles)
-        while not puzzle:
-            puzzle = rc(puzzles)
-        user = rc(users)
-        while not user:
-            user = rc(users)
-        print(f"score: {num}, puzzle_id: {puzzle.id}, user_id: {user.id}")
-        p = Puzzlescore(
-            score=num,
-            puzzle_id=puzzle.id,
-            user_id=user.id
+    for i in range(NUM_SCORES):
+        ps = Puzzlescore(
+            score=i,
+            user_id=users[i % NUM_USERS].id,
+            puzzle_id=puzzles[i % NUM_PUZZLES].id
         )
-        puzzlescores.append(p)
-    return puzzlescores
+        db.session.add(ps)
+        scores.append(ps)
 
-if __name__ == '__main__':
+    return scores
 
+def create_messages(users):
+    messages = []
+
+    for i in range(NUM_MESSAGES):
+        m = Message(
+            body=f'Message {i}',
+            username=users[i % NUM_USERS].username
+        )
+        db.session.add(m)
+        messages.append(m)
+
+    return messages
+
+def seed_database():
+    print("Seeding users...")
+    users = create_users()
+
+    print("Seeding puzzles...")
+    puzzles = create_puzzles()
+
+    print("Seeding scores...")
+    scores = create_scores(users, puzzles)
+
+    print("Seeding messages...")
+    messages = create_messages(users)
+
+    print("Committing changes to database...")
+    db.session.commit()
+
+if __name__ == "__main__":
     with app.app_context():
-        print("Clearing db...")
-        Puzzle.query.delete()
-        User.query.delete()
-        Puzzlescore.query.delete()
-
-        print("Seeding puzzles...")
-        puzzles = create_puzzles()
-        db.session.add_all(puzzles)
-        db.session.commit()
-
-        # create users
-        print("Seeding users...")
-        users = create_users()
-        db.session.add_all(users)
-        db.session.commit()
-
-        # create puzzlescores
-        print("Seeding puzzlescores...")
-        puzzlescores = create_puzzlescores(puzzles, users)
-        db.session.add_all(puzzlescores)
-        db.session.commit()
-
-        print("Done seeding!")
+        db.drop_all()
+        db.create_all()
+        seed_database()

@@ -4,11 +4,13 @@
 # from flask_restful import Api, Resource
 # from models import db, User, Puzzle, Puzzlescore, Message
 # from flask_migrate import Migrate
+
 from flask import Flask, make_response, jsonify, request
 from flask_migrate import Migrate
 from flask_restful import Api, Resource
 import requests
 from flask_cors import CORS
+from random import choice
 
 from models import db, User, Puzzle, Puzzlescore, Message
 app = Flask(__name__)
@@ -86,13 +88,19 @@ class Puzzlescores(Resource):
 
 api.add_resource(Puzzlescores, "/puzzlescores")
 
+from random import choice
+
 @app.route('/quote')
 def fetch_quote():
     url = 'https://type.fit/api/quotes'
-    params = {'key':'value'}
-    r = requests.get(url = url, params = params) 
+    r = requests.get(url=url)
     response = r.json()
-    return jsonify(response)
+
+    # Shuffle through quotes until a short enough one is found
+    while True:
+        quote = choice(response)
+        if len(quote['text']) < 30:
+            return jsonify(quote)
 
 @app.route('/messages', methods=['GET', 'POST'])
 def messages():

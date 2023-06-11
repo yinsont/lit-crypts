@@ -23,6 +23,7 @@ index = parseInt(index)
   }, []);
   console.log(quote)
   let sentence = removeSpecialCharacters(quote);
+  console.log(quote)
   let key = "THIS IS WORKING";
   let encrypted = Encryption(key, sentence);
 

@@ -5,60 +5,53 @@ import ScoreCard from "./ScoreCard";
 import { useState, useEffect } from "react";
 
 function Game() {
-
   const [quote, setQuote] = useState('');
 
-let min = 0
-let max = 1643
-let index = Math.random() * (max - min) + min
-
-function removeSpecialCharacters(str) {
+  function removeSpecialCharacters(str) {
     return str.replace(/[^\w\s]/gi, '');
   }
-index = parseInt(index)
+
   useEffect(() => {
-    fetch('https://type.fit/api/quotes')
-    .then(response => response.json())
-    .then(data => setQuote(data[index].text));
+    fetch('http://127.0.0.1:5555/puzzles')
+      .then(response => response.json())
+      .then(data => {
+        const puzzles = data;
+        if (puzzles && puzzles.length > 0) {
+          const randomIndex = Math.floor(Math.random() * puzzles.length);
+          const randomPuzzle = puzzles[randomIndex];
+          setQuote(randomPuzzle.quote);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching puzzles:', error);
+      });
   }, []);
-  console.log(quote)
+
   let sentence = removeSpecialCharacters(quote);
-  console.log(quote)
   let key = "THIS IS WORKING";
   let encrypted = Encryption(key, sentence);
 
-  let puzzle = encrypted.split(" ");
-
-  // let objectPairs = []
   let pairedObject = {};
 
-  sentence.split(" ");
-  encrypted.split(" ");
-  for (let i = 0; i < encrypted.length; i++) {
-    pairedObject[encrypted[i].toUpperCase()] = sentence[i].toUpperCase();
+  const sentenceArray = sentence.split(" ");
+  const encryptedArray = encrypted.split(" ");
+  for (let i = 0; i < encryptedArray.length; i++) {
+    pairedObject[encryptedArray[i].toUpperCase()] = sentenceArray[i].toUpperCase();
   }
-  // console.log(pairedObject)
-  // console.log(inputs);
 
   const [score, setScore] = useState(0);
 
   function renderScore(score) {
     setScore(score);
   }
-  //
-  // puzzle = puzzle.split('')
-  let new_puzzle = puzzle.join("");
-  new_puzzle = new_puzzle.split("");
-  // console.log(new_puzzle) //! ['F', 'B', 'P', 'V', 'M', 'H']
 
+  const newPuzzleArray = encrypted.split(" ");
 
-  // LOOK AT THIS FUCKERS
-  let letter = Array.from(puzzle).map((w) => {
-    // game display characters
+  const letter = newPuzzleArray.map((w, index) => {
     return (
-      <div className="word">
-        {w.split("").map((character) => (
-          <CryptedCard character={character} value={pairedObject[character]} />
+      <div className="word" key={index}>
+        {w.split("").map((character, i) => (
+          <CryptedCard key={i} character={character} value={pairedObject[character]} />
         ))}
       </div>
     );
@@ -66,14 +59,13 @@ index = parseInt(index)
 
   return (
     <div className="Game">
-
       <p id="score">
         Score: {"\n"}
         {score}
       </p>
       <div className="Game-Display">{letter}</div>
       <div className="Game-Keys">
-        <GuessForm puzzle = {encrypted.split(' ')}></GuessForm>
+        <GuessForm puzzle={newPuzzleArray}></GuessForm>
         <aside className="timerStyle">
           <ScoreCard renderScore={renderScore} />
         </aside>

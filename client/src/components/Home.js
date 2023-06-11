@@ -11,7 +11,7 @@ export default function Home({ inputs }, { children }) {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:5000/messages")
+    fetch("http://localhost:3000/messages")
       .then((r) => r.json())
       .then((messages) => setMessages(messages));
   }, []);

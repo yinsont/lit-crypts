@@ -1,46 +1,91 @@
-from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
-# import openai
-# import gradio as gr
+# from flask import Flask, request, jsonify, make_response, Resource
+# import requests
+# from flask_cors import CORS
+# from flask_restful import Api, Resource
+# from models import db, User, Puzzle, Puzzlescore, Message
+# from flask_migrate import Migrate
+from flask import Flask, make_response, jsonify, request
+from flask_migrate import Migrate
+from flask_restful import Api, Resource
 import requests
 from flask_cors import CORS
 
+from models import db, User, Puzzle, Puzzlescore, Message
 app = Flask(__name__)
 CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
-db = SQLAlchemy(app)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.json.compact = False
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(120), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(120), nullable=False)
+migrate = Migrate(app, db)
+db.init_app(app)
+api = Api(app)
 
-class Puzzle(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    puzzle = db.Column(db.String(120), unique=True, nullable=False)
-    solution = db.Column(db.String(120), unique=True, nullable=False)
+class Users(Resource):
 
-class PuzzleScore(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    score = db.Column(db.Integer, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    puzzle_id = db.Column(db.Integer, db.ForeignKey('puzzle.id'), nullable=False)
+    def get(self):
+        users = [u.to_dict(
+            only=("id", "user", "puzzlescores")) for u in User.query.all()]
 
-# client = openai.Client()
+        return users, 200
 
-# def transcribe(audio):
-#     response = client.generate(
-#         prompt="Transcribe the following audio:",
-#         audio=audio,
-#         temperature=0.9,
-#         top_p=0.9,
-#         n=1,
-#         do_sample=True,
-#     )
-#     return response['choices'][0]['text']
+    def post(self):
+        try:
+            new_user = User(
+                user=request.json['user'],
+            )
 
-# fetch quote + create route 
+            db.session.add(new_user)
+            db.session.commit()
+
+            return new_user.to_dict(only=("id", "user")), 201
+        except:
+            return {"error": "400: Validation error"}, 400
+
+
+api.add_resource(Users, "/users")
+
+
+class Puzzles(Resource):
+
+    def get(self):
+        try:
+
+            puzzles = [p.to_dict(only=("id")) for p in Puzzle.query.all()]
+
+            return puzzles, 200
+
+        except:
+            raise Exception({"error": "Something went wrong"})
+
+
+api.add_resource(Puzzles, "/puzzles")
+
+
+class Puzzlescores(Resource):
+
+    def post(self):
+        try:
+            new_puzzlescore = Puzzlescore(
+                id = request.json['id'],
+                user_id=request.json['user_id'],
+                puzzle_id=request.json['puzzle_id']
+            )
+
+            db.session.add(new_puzzlescore)
+            db.session.commit()
+
+            
+            return new_puzzlescore.puzzle.to_dict(only=("id", "score")), 201
+
+        except:
+            return {
+                "error": "400: Validation error"
+            }, 400
+
+
+api.add_resource(Puzzlescores, "/puzzlescores")
+
 @app.route('/quote')
 def fetch_quote():
     url = 'https://type.fit/api/quotes'
@@ -49,38 +94,60 @@ def fetch_quote():
     response = r.json()
     return jsonify(response)
 
-# @app.route('/submit_solution', methods=['POST'])
-# def submit_solution():
-#     audio_file = request.files['audio_file']
-#     filepath = audio_file.filename
+@app.route('/messages', methods=['GET', 'POST'])
+def messages():
+    if request.method == 'GET':
+        messages = Message.query.order_by('created_at').all()
 
-#     puzzle = Puzzle.query.get(request.form.get('puzzle_id'))
-#     # solution_from_audio = transcribe(filepath)
+        response = make_response(
+            jsonify([message.to_dict() for message in messages]),
+            200,
+        )
+    
+    elif request.method == 'POST':
+        data = request.get_json()
+        message = Message(
+            body=data['body'],
+            username=data['username']
+        )
 
-#     if puzzle.solution == solution_from_audio:
-#         # This assumes the User and Puzzle already exist
-#         score = PuzzleScore.query.filter_by(user_id=request.form.get('user_id'), puzzle_id=puzzle.id).first()
-#         if score is None:
-#             score = PuzzleScore(score=0, user_id=request.form.get('user_id'), puzzle_id=puzzle.id)
-#         score.score += 1
-#         db.session.add(score)
-#         db.session.commit()
-#         return jsonify({"message": "Correct solution", "score": score.score}), 200
-#     else:
-#         return jsonify({"message": "Wrong solution"}), 400
+        db.session.add(message)
+        db.session.commit()
 
-# if __name__ == "__main__":
-#     db.create_all()
-#     # gr.Interface(
-#     #     fn=transcribe,
-#     #     inputs=[
-#     #         gr.inputs.Audio(source="microphone", type='filepath')
-#     #     ],
-#     #     outputs=[
-#     #         'textbox'
-#     #     ],
-#     #     live=True
-#     # .launch()
+        response = make_response(
+            jsonify(message.to_dict()),
+            201,
+        )
+
+    return response
+
+@app.route('/messages/<int:id>', methods=['PATCH', 'DELETE'])
+def messages_by_id(id):
+    message = Message.query.filter_by(id=id).first()
+
+    if request.method == 'PATCH':
+        data = request.get_json()
+        for attr in data:
+            setattr(message, attr, data[attr])
+            
+        db.session.add(message)
+        db.session.commit()
+
+        response = make_response(
+            jsonify(message.to_dict()),
+            200,
+        )
+
+    elif request.method == 'DELETE':
+        db.session.delete(message)
+        db.session.commit()
+
+        response = make_response(
+            jsonify({'deleted': True}),
+            200,
+        )
+
+    return response
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

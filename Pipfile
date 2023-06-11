@@ -40,6 +40,11 @@ jsonify = "*"
 cors = "*"
 openai = "*"
 gradio = "*"
+resource = "*"
+sqlalchemy = "*"
+migrate = "*"
+pytest = "*"
+faker = "*"
 
 [dev-packages]
 

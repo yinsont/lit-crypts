@@ -1,76 +1,87 @@
 from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy import MetaData
+from sqlalchemy.orm import validates
+from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy_serializer import SerializerMixin
-from datetime import datetime
-from sqlalchemy import MetaData 
-from sqlalchemy.orm import validates 
-from sqlalchemy.ext.associationproxy import association_proxy 
+convention = {
+  "ix": "ix_%(column_0_label)s",
+  "uq": "uq_%(table_name)s_%(column_0_name)s",
+  "ck": "ck_%(table_name)s_%(constraint_name)s",
+  "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+  "pk": "pk_%(table_name)s"
+}
+metadata = MetaData(naming_convention=convention)
+db = SQLAlchemy(metadata=metadata)
 
-db = SQLAlchemy()
-
-class User(SerializerMixin, db.Model):
+class User(db.Model,SerializerMixin):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String, unique=True)
-    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    user = db.Column(db.String, nullable=False)
 
-    name = db.Column(db.String(64), nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password_hash = db.Column(db.String(128), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, onupdate=datetime.utcnow)
-    last_login = db.Column(db.DateTime)
-    role = db.relationship('Role', backref='users') 
+    puzzlescores = db.relationship("Puzzlescore", backref='user')
 
-    puzzles = db.relationship('Puzzle', backref='user', lazy=True)
+    serialize_rules = ("-puzzles.user",)
+    
+    @validates('user')
+    def validate_user(self, key, user):
+        if not user and len(user) < 0:
+            raise ValueError("User must be present.")
 
-    @property
-    def password(self):
-        raise AttributeError('password is not a readable attribute')
-
-    @password.setter
-    def password(self, password):
-        self.password_hash = generate_password_hash(password)
-
-    def verify_password(self, password):
-        return check_password_hash(self.password_hash, password)
+        return user
 
     def __repr__(self):
-        return '<User %r>' % self.username
-
-class Role(SerializerMixin, db.Model):
-    __tablename__ = 'roles'
-    id = db.Column(db.Integer, primary_key=True) 
-    name = db.Column(db.String(64), unique=True)
-
-    def __repr__(self):
-        return '<Role %r>' % self.name 
-
-class Puzzle(SerializerMixin, db.Model):
+        return f'<User {self.id}: {self.user}>'
+    
+class Puzzle(db.Model,SerializerMixin): 
     __tablename__ = 'puzzles'
 
     id = db.Column(db.Integer, primary_key=True)
-    sentence = db.Column(db.String(30), nullable=False)
-    key = db.Column(db.String(120), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    scores = db.relationship('PuzzleScore', backref='puzzle', lazy=True)
+    
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    updated_at = db.Column(db.DateTime, onupdate=db.func.now())
+    
+    def validate_id(self, key, id):
+        if not id: 
+            raise ValueError("ID must be unique.")
 
-    serialize_rules = ('-user.puzzles',) 
-
-class PuzzleScore(SerializerMixin, db.Model):
+        return id
+    
+class Puzzlescore(db.Model, SerializerMixin):
     __tablename__ = 'puzzlescores'
 
     id = db.Column(db.Integer, primary_key=True)
-    score = db.Column(db.Integer, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    puzzle_id = db.Column(db.Integer, db.ForeignKey('puzzles.id'), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    score = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    puzzle_id = db.Column(db.Integer, db.ForeignKey('puzzles.id'))
 
-    serialize_rules = ('-puzzle.scores', '-user.scores')
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    updated_at = db.Column(db.DateTime, onupdate=db.func.now())
+
+    serialize_rules = ("-user.puzzlescores", "-puzzle.missions")
+    
+    @validates('user_id')
+    def validate_user_id(self, key, user_id):
+        if not user_id:
+            raise ValueError("User must exist")
+
+        return user_id
+
+    @validates('puzzle_id')
+    def validate_puzzle_id(self, key, puzzle_id):
+        if not puzzle_id:
+            raise ValueError("Puzzle must exist")
+
+        return puzzle_id
+    
+class Message(db.Model, SerializerMixin):
+    __tablename__ = 'messages'
+
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String)
+    username = db.Column(db.String)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
     def __repr__(self):
-        return f'<PuzzleScore {self.id}>'
+        return f'<Message by {self.username}: {self.body[:10]}...>'

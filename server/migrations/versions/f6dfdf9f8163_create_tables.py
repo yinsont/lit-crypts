@@ -1,8 +1,8 @@
 """create tables
 
-Revision ID: 9a64f448fb3f
+Revision ID: f6dfdf9f8163
 Revises: 
-Create Date: 2023-06-11 13:01:21.415256
+Create Date: 2023-06-11 13:29:02.615511
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '9a64f448fb3f'
+revision = 'f6dfdf9f8163'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -28,6 +28,7 @@ def upgrade():
     )
     op.create_table('puzzles',
     sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('quote', sa.String(length=255), nullable=True),
     sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=False),
     sa.PrimaryKeyConstraint('id')

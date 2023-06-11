@@ -1,5 +1,5 @@
 from models import db, User, Puzzle, Puzzlescore, Message
-from app import app
+from app import app, fetch_quote
 
 NUM_USERS = 10
 NUM_PUZZLES = 10
@@ -24,7 +24,8 @@ def create_puzzles():
     puzzles = []
 
     for i in range(NUM_PUZZLES):
-        p = Puzzle()
+        quote = fetch_quote()  # Fetch a short quote
+        p = Puzzle(quote=quote)  # Add quote to the puzzle
         db.session.add(p)
         puzzles.append(p)
 

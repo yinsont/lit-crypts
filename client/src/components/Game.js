@@ -30,15 +30,23 @@ function Game() {
   let sentence = removeSpecialCharacters(quote);
   let key = "THIS IS WORKING";
   let encrypted = Encryption(key, sentence);
+  console.log(sentence)
+  console.log(encrypted)
 
-  let pairedObject = {};
-
-  const sentenceArray = sentence.split(" ");
-  const encryptedArray = encrypted.split(" ");
-  for (let i = 0; i < encryptedArray.length; i++) {
-    pairedObject[encryptedArray[i].toUpperCase()] = sentenceArray[i].toUpperCase();
+  let sentenceArray = sentence.toUpperCase().split("");
+  let encryptedArray = encrypted.toUpperCase().split("");
+  
+  let combinedObject = {};
+  
+  // Assuming both arrays have the same length
+  for (let i = 0; i < sentenceArray.length; i++) {
+    const key = sentenceArray[i];
+    const value = encryptedArray[i];
+  
+    // Assigning the value as an object with an empty string
+    combinedObject[key.toUpperCase()] = { original: sentenceArray[i], encrypted: value, input: "" };
   }
-
+  console.log(combinedObject)
   const [score, setScore] = useState(0);
 
   function renderScore(score) {
@@ -50,8 +58,8 @@ function Game() {
   const letter = newPuzzleArray.map((w, index) => {
     return (
       <div className="word" key={index}>
-        {w.split("").map((character, i) => (
-          <CryptedCard key={i} character={character} value={pairedObject[character]} />
+        {w.split("").map((character) => (
+          <CryptedCard character={character} value={combinedObject[character]} />
         ))}
       </div>
     );

@@ -6,6 +6,20 @@ import { useState, useEffect } from "react";
 
 function Game() {
   const [quote, setQuote] = useState('');
+  const [attempts, setAttempts] = useState([])
+
+
+  function handleAttempts(value) {
+    // console.log(value);
+    setAttempts([...attempts, value]);
+    // console.log(attempts)
+  
+    if (value.select in combinedObject) {
+      let detect = value.select;
+      combinedObject[detect].input = value.input;
+      console.log(combinedObject)
+    }
+  }
 
   function removeSpecialCharacters(str) {
     return str.replace(/[^\w\s]/gi, '');
@@ -30,8 +44,8 @@ function Game() {
   let sentence = removeSpecialCharacters(quote);
   let key = "THIS IS WORKING";
   let encrypted = Encryption(key, sentence);
-    console.log(sentence)
-  console.log(encrypted)
+  //   console.log(sentence)
+  // console.log(encrypted)
 
   let sentenceArray = sentence.toUpperCase().split("");
   let encryptedArray = encrypted.toUpperCase().split("");
@@ -44,9 +58,10 @@ function Game() {
     const value = encryptedArray[i];
   
     // Assigning the value as an object with an empty string
-    combinedObject[key.toUpperCase()] = { original: sentenceArray[i], encrypted: value, input: "" };
+    combinedObject[value.toUpperCase()] = { encrypted: value, original: sentenceArray[i], input: "" };
   }
   console.log(combinedObject)
+  
   const [score, setScore] = useState(0);
 
   function renderScore(score) {
@@ -59,7 +74,7 @@ function Game() {
     return (
       <div className="word" key={index}>
         {w.split("").map((character) => (
-          <CryptedCard character={character} value={combinedObject[character]} />
+          <CryptedCard character={character} value={combinedObject[character]} attempts = {attempts}/>
         ))}
       </div>
     );
@@ -73,7 +88,7 @@ function Game() {
       </p>
       <div className="Game-Display">{letter}</div>
       <div className="Game-Keys">
-        <GuessForm puzzle={newPuzzleArray}></GuessForm>
+        <GuessForm puzzle={newPuzzleArray} handleAttempts ={handleAttempts}></GuessForm>
         <aside className="timerStyle">
           <ScoreCard renderScore={renderScore} />
         </aside>

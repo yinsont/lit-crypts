@@ -1,14 +1,26 @@
-export default function CryptedCard({ character, value }) {
+export default function CryptedCard({ character, value, attempts }) {
+  // console.log(value); // Output: "W
+  // console.log(value)
+  console.log(attempts)
+  
+  // let found = false;
 
-  console.log(value)
-  // console.log(key)
-  // || (input.toUpperCase() == value)
+  for (let i = 0; i < attempts.length; i++) {
+    if (attempts[i].select == character && attempts[i].input == value.original) {
+      return (
+        <div className="card-green" value={value}>
+        <h1>{value.original.toUpperCase()}</h1>
+      </div>
+      )
+    }
+  }
+
   if (character == " ") {
     return <div className="Empty-Card"></div>;
-  } else if ((character == value)){
+  } else if ((character == value.original)) {
     return (
       <div className="card-green" value={value}>
-        <h1>{character.toUpperCase()}</h1>
+        <h1>{value.original.toUpperCase()}</h1>
       </div>
     );
   } else {

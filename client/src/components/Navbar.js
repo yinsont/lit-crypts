@@ -1,7 +1,7 @@
 import { React, useState } from "react";
 import * as RxIcons from "react-icons/rx";
 import Dropdown from "./Dropdown.js";
-import Modal from "./Modal.js";
+import StartModal from "./StartModal.js";
 import DarkMode from "./DarkMode.js"
 export default function Navbar() {
   const [dropDown, setDropDown] = useState(false);
@@ -20,7 +20,7 @@ export default function Navbar() {
       <header className="navbar">
 
         <button onClick = {callModal}>CALL MODAL</button>
-        {modal ? <Modal closeModal = {() => setModal(false)}/> : null}
+        {modal ? <StartModal closeModal = {() => setModal(false)}/> : null}
 
         <h1 id="title">Lit🔥 Crypts🧩</h1>
         <DarkMode />

@@ -3,12 +3,20 @@ import GuessForm from "./GuessForm";
 import Encryption from "./Encryption";
 import ScoreCard from "./ScoreCard";
 import { useState, useEffect } from "react";
+import StartModal from "./StartModal";
 
 function Game() {
   const [quote, setQuote] = useState('');
   const [attempts, setAttempts] = useState([])
   
   const [key, setKey] = useState('')
+  
+  const [startGame, setStartGame] = useState(false)
+  const [modal, setModal] = useState(false)
+
+  useEffect(() => {
+    setModal(true)
+  }, [])
 
   useEffect(() => {
     fetch('https://random-word-api.herokuapp.com/word')
@@ -51,7 +59,7 @@ function Game() {
   let sentence = removeSpecialCharacters(quote);
   // let key = "THIS IS WORKING";
   let encrypted = Encryption(key, sentence);
-  //   console.log(sentence)
+    console.log(sentence)
   // console.log(encrypted)
 
   let sentenceArray = sentence.toUpperCase().split("");
@@ -67,7 +75,7 @@ function Game() {
     // Assigning the value as an object with an empty string
     combinedObject[value.toUpperCase()] = { encrypted: value, original: sentenceArray[i], input: "" };
   }
-  console.log(combinedObject)
+  // console.log(combinedObject)
   
   const [score, setScore] = useState(0);
 
@@ -88,20 +96,24 @@ function Game() {
   });
 
   return (
-    <div className="Game">
-      <p id="score">
-        Score: {"\n"}
-        {score}
-      </p>
-      <div className="Game-Display">{letter}</div>
-      <div className="Game-Keys">
-        <GuessForm puzzle={newPuzzleArray} handleAttempts ={handleAttempts}></GuessForm>
-        <aside className="timerStyle">
-          <ScoreCard renderScore={renderScore} />
-        </aside>
+    <div>
+      {modal ? <StartModal closeModal = {() => setModal(false)}/> : null}
+      <div className="Game">
+        <p id="score">
+          Score: {"\n"}
+          {score}
+        </p>
+        <div className="Game-Display">{letter}</div>
+        <div className="Game-Keys">
+          <GuessForm puzzle={newPuzzleArray} handleAttempts ={handleAttempts}></GuessForm>
+          <aside className="timerStyle">
+            <ScoreCard renderScore={renderScore} />
+          </aside>
+        </div>
       </div>
     </div>
   );
 }
+
 
 export default Game;

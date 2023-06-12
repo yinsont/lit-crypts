@@ -1,9 +1,6 @@
 export default function CryptedCard({ character, value, attempts }) {
-  // console.log(value); // Output: "W
-  // console.log(value)
-  console.log(attempts)
-  
-  // let found = false;
+
+  // console.log(attempts)
 
   for (let i = 0; i < attempts.length; i++) {
     if (attempts[i].select == character && attempts[i].input == value.original) {

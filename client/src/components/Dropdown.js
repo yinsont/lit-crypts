@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export default function Dropdown() {
   return (
       <nav className = "Dropdown-Menu">
-            <Link className="link" to="/" exact="true">
+            <Link className="link" to="/home" exact="true">
             Home
             </Link>
             <Link className="link" to="/about" exact="true">

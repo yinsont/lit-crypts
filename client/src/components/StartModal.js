@@ -18,11 +18,11 @@ const OVERLAY_STYLES = { //Makes background dark and unclickable
     right: 0,
     bottom: 0,
     backgroundColor: 'rgba(0,0,0,.75)',
-    zIndex: 1000
+    zIndex: 1000,
 }
 
 
-export default function Modal({closeModal}){
+export default function StartModal({closeModal}){
     return (
         <>
             <div style={OVERLAY_STYLES}>

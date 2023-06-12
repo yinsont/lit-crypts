@@ -5,7 +5,7 @@ import requests
 from flask_cors import CORS
 from random import choice
 
-from models import db, User, Puzzle, Puzzlescore, Message
+from models import db, User, Puzzle, Message
 
 app = Flask(__name__)
 CORS(app)
@@ -32,7 +32,7 @@ def fetch_quote():
 class Users(Resource):
     def get(self):
         users = [u.to_dict(
-            only=("id", "user", "puzzlescores")) for u in User.query.all()]
+            only=("id", "user")) for u in User.query.all()]
         return users, 200
 
     def post(self):

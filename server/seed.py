@@ -1,85 +1,51 @@
-from models import db, User, Puzzle, Puzzlescore, Message
+from models import db, User, Puzzle, Message
 from app import app, fetch_quote
-from faker import Faker
 
-fake = Faker()
+# NUM_PUZZLES = 1643
+NUM_PUZZLES = 10
+user1 = User(username = 'Yinsont', email = 'yinson.tso@gmail.com', password = 'yinnyt', score=750)
+# message1 = Message(body = 'Wow! This game is almost as lit 🔥 as this UI')
 
-NUM_USERS = 10
-NUM_PUZZLES = 1643
-NUM_SCORES = 10
-NUM_MESSAGES = 10
+user2 = User(username = 'dfarlz97', email = 'dfarley1@binghamton.edu', password = 'Yuhyeet23!!', score=825)
+# message2 = Message(body = f'" Wisdom begins in wonder." Definetely going to remember that one')
 
-def create_users():
-    users = []
+user3 = User(username = 'BobbyB00ls', email = 'bb99@gmail.com', password = 'boolinbobby', score=900)
+# message3 = Message(body = 'Tight.')
 
-    for i in range(NUM_USERS):
-        u = User(
-            username=f'user{i}',
-            email=f'user{i}@example.com',
-            password=f'password{i}'
-        )
-        db.session.add(u)
-        users.append(u)
+user4 = User(username = 'KuberneteAndSpaghetti12', email = 'ClusterClown.gmail.com', password = 'tenserflowin', score=50)
+# message4 = Message(body = 'This game is super fun and amazing. My only concern is whether or not this game be deployed via Kubernetes. By the way, have any of you fellow Lit-Crypters heard of Kubernetes? If not, WAKE UP.')
 
-    return users
+userInfo = [user1, user2, user3, user4]
+# messageArr = [message1, message2, message3, message4]
+
+message1 = Message(body='Wow! This game is almost as lit 🔥 as this UI', user=user1, score=user1.score)
+message2 = Message(body=f'" Wisdom begins in wonder." Definetely going to remember that one', user=user2, score=user2.score)
+message3 = Message(body='Tight.', user=user3, score=user3.score)
+message4 = Message(body='This game is super fun and amazing. My only concern is whether or not this game be deployed via Kubernetes. By the way, have any of you fellow Lit-Crypters heard of Kubernetes? If not, WAKE UP.', user=user4, score=user4.score)
+
+messageArr = [message1, message2, message3, message4]
 
 def create_puzzles():
     puzzles = []
 
     for i in range(NUM_PUZZLES):
-        quote = fetch_quote()  # Fetch a short quote
-        p = Puzzle(quote=quote)  # Add quote to the puzzle
+        quote = fetch_quote() 
+        p = Puzzle(quote=quote)  
         db.session.add(p)
         puzzles.append(p)
 
     return puzzles
 
-def create_scores(users, puzzles):
-    scores = []
-
-    for i in range(NUM_SCORES):
-        ps = Puzzlescore(
-            score=i,
-            user_id=users[i % NUM_USERS].id,
-            puzzle_id=puzzles[i % NUM_PUZZLES].id
-        )
-        db.session.add(ps)
-        scores.append(ps)
-
-    return scores
-
-
-def create_messages(users):
-    messages = []
-
-    for i in range(NUM_MESSAGES):
-        m = Message(
-            body=f'{fake.sentence(nb_words=5)}',
-            username=users[i % NUM_USERS].username
-        )
-        db.session.add(m)
-        messages.append(m)
-
-    return messages
-
 def seed_database():
-    print("Seeding users...")
-    users = create_users()
-
-    print("Seeding puzzles...")
-    puzzles = create_puzzles()
-
-    print("Seeding scores...")
-    scores = create_scores(users, puzzles)
-
-    print("Seeding messages...")
-    messages = create_messages(users)
-
-    print("Committing changes to database...")
+    for user in userInfo:
+        db.session.add(user)
+    for message in messageArr:
+        db.session.add(message)
     db.session.commit()
 
 if __name__ == "__main__":
     with app.app_context():
         db.drop_all()
         db.create_all()
+        puzzles = create_puzzles()
         seed_database()

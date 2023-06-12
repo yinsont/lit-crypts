@@ -7,7 +7,14 @@ import { useState, useEffect } from "react";
 function Game() {
   const [quote, setQuote] = useState('');
   const [attempts, setAttempts] = useState([])
+  
+  const [key, setKey] = useState('')
 
+  useEffect(() => {
+    fetch('https://random-word-api.herokuapp.com/word')
+      .then(response => response.json())
+      .then(data => setKey(data[0]))
+  }, [])
 
   function handleAttempts(value) {
     // console.log(value);
@@ -42,7 +49,7 @@ function Game() {
   }, []);
 
   let sentence = removeSpecialCharacters(quote);
-  let key = "THIS IS WORKING";
+  // let key = "THIS IS WORKING";
   let encrypted = Encryption(key, sentence);
   //   console.log(sentence)
   // console.log(encrypted)

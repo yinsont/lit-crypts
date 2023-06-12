@@ -1,7 +1,7 @@
 import {React, useState} from 'react'
 import ReactDOM from 'react-dom/client'
 
-export default function GuessForm({puzzle}){
+export default function GuessForm({puzzle, handleAttempts}){
 
     // console.log(guess)
 
@@ -9,8 +9,9 @@ export default function GuessForm({puzzle}){
     const [select, setSelect] = useState('')
  
     const handleGuess = (value) => {
+        // value.preventDefault()
+      console.log(value)
       setGuess(value);
-    //   console.log(value)
     };
 
     const handleSelect = (value) => {
@@ -27,7 +28,7 @@ export default function GuessForm({puzzle}){
             select: select,
             input: guess,
         }
-        console.log(attempt)
+        handleAttempts(attempt)
       }
     
     let keys = [...new Set(new_puzzle)]; //make new array have one of each character

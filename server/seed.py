@@ -1,5 +1,8 @@
 from models import db, User, Puzzle, Puzzlescore, Message
 from app import app, fetch_quote
+from faker import Faker
+
+fake = Faker()
 
 NUM_USERS = 10
 NUM_PUZZLES = 10
@@ -45,12 +48,13 @@ def create_scores(users, puzzles):
 
     return scores
 
+
 def create_messages(users):
     messages = []
 
     for i in range(NUM_MESSAGES):
         m = Message(
-            body=f'Message {i}',
+            body=f'{fake.sentence(nb_words=5)}',
             username=users[i % NUM_USERS].username
         )
         db.session.add(m)

@@ -5,7 +5,7 @@ from faker import Faker
 fake = Faker()
 
 NUM_USERS = 10
-NUM_PUZZLES = 10
+NUM_PUZZLES = 1643
 NUM_SCORES = 10
 NUM_MESSAGES = 10
 

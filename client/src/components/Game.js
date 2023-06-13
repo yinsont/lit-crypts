@@ -11,7 +11,6 @@ function Game() {
   
   const [key, setKey] = useState('')
   
-  const [startGame, setStartGame] = useState(false)
   const [modal, setModal] = useState(false)
 
   useEffect(() => {
@@ -75,7 +74,7 @@ function Game() {
     // Assigning the value as an object with an empty string
     combinedObject[value.toUpperCase()] = { encrypted: value, original: sentenceArray[i], input: "" };
   }
-  // console.log(combinedObject)
+  console.log(combinedObject)
   
   const [score, setScore] = useState(0);
 

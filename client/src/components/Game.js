@@ -51,7 +51,7 @@ function Game() {
   let sentence = removeSpecialCharacters(quote);
   // let key = "THIS IS WORKING";
   let encrypted = Encryption(key, sentence);
-  //   console.log(sentence)
+    console.log(sentence)
   // console.log(encrypted)
 
   let sentenceArray = sentence.toUpperCase().split("");

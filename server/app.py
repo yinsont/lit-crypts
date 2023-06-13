@@ -2,13 +2,15 @@ from flask import Flask, make_response, jsonify, request
 from flask_migrate import Migrate
 from flask_restful import Api, Resource
 import requests
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from random import choice
+import ipdb
+
 
 from models import db, User, Puzzle, Message
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
@@ -76,7 +78,7 @@ def messages():
         response = make_response(jsonify([message.to_dict() for message in messages]), 200)
     elif request.method == 'POST':
         data = request.get_json()
-        message = Message(body=data['body'], username=data['username'])
+        message = Message(body=data['body'], user_id=data['user_id'])
         db.session.add(message)
         db.session.commit()
         response = make_response(jsonify(message.to_dict()), 201)

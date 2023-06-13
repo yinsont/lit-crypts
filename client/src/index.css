@@ -41,12 +41,9 @@
 #score{
     font-family: 'Games', sans-serif;
     text-align: center;
-    box-shadow: 1px 1px 8px black;
-    border-radius: 50px;
     width: 10vh;
-    background-color: red;
     color: green;
-    font-size: 20px;
+    font-size: 40px;
 }
 .Empty-Card{
     background-color: transparent;

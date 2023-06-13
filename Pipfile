@@ -45,6 +45,7 @@ sqlalchemy = "*"
 migrate = "*"
 pytest = "*"
 faker = "*"
+ipdb = "*"
 
 [dev-packages]
 

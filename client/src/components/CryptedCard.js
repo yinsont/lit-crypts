@@ -1,7 +1,7 @@
 export default function CryptedCard({ character, value, attempts }) {
   // console.log(value); // Output: "W
   // console.log(value)
-  console.log(attempts)
+  // console.log(attempts)
   
   // let found = false;
 

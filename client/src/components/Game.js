@@ -2,6 +2,7 @@ import CryptedCard from "./CryptedCard";
 import GuessForm from "./GuessForm";
 import Encryption from "./Encryption";
 import ScoreCard from "./ScoreCard";
+import StartModal from "./StartModal";
 import { useState, useEffect } from "react";
 
 function Game() {
@@ -94,21 +95,23 @@ function Game() {
     );
   });
 
-  return (
-    <div className="Game">
-      <p id="score">
-        Score: {"\n"}
-        {score}
-      </p>
-      <div className="Game-Display">{letter}</div>
-      <div className="Game-Keys">
-        <GuessForm puzzle={newPuzzleArray} handleAttempts ={handleAttempts}></GuessForm>
-        <aside className="timerStyle">
-          <ScoreCard renderScore={renderScore} />
-        </aside>
+return (
+    <div>
+      {modal ? <StartModal closeModal = {() => setModal(false)}/> : null}
+      <div className="Game">
+        <p id="score">
+          Score: {"\n"}
+          {score}
+        </p>
+        <div className="Game-Display">{letter}</div>
+        <div className="Game-Keys">
+          <GuessForm puzzle={newPuzzleArray} handleAttempts ={handleAttempts}></GuessForm>
+          <aside className="timerStyle">
+            <ScoreCard renderScore={renderScore} />
+          </aside>
+        </div>
       </div>
     </div>
   );
 }
-
 export default Game;

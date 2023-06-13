@@ -6,6 +6,7 @@ import About from "./About.js";
 import Login from "./Login.js";
 import Signup from "./Signup.js";
 import Leaderboard from "./Leaderboard.js";
+import Start from "./Start.js"
 
 function App() {
   let inputs = {};
@@ -15,7 +16,8 @@ function App() {
       <Navbar />
 
       <Routes>
-        <Route path="/" exact="true" element={<Home inputs={inputs} />} />
+        <Route path="/" exact="true" element={<Start />} />
+        <Route path="/home" exact="true" element={<Home/>} />
         <Route path="/about" exact="true" element={<About />} />
         <Route path="/signup" exact="true" element={<Signup />} />
         <Route path="/login" exact="true" element={<Login />} />

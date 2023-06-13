@@ -9,6 +9,13 @@ function Game() {
   const [attempts, setAttempts] = useState([])
   
   const [key, setKey] = useState('')
+  
+  const [startGame, setStartGame] = useState(false)
+  const [modal, setModal] = useState(false)
+
+  useEffect(() => {
+    setModal(true)
+  }, [])
 
   useEffect(() => {
     fetch('https://random-word-api.herokuapp.com/word')

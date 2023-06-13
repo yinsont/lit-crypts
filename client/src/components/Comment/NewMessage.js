@@ -10,17 +10,20 @@ function NewMessage({ currentUser, onAddMessage }) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Accept": "application/json"
       },
       body: JSON.stringify({
-        username: currentUser.username,
         body: body,
+        user_id: currentUser.id
       }),
     })
       .then((r) => r.json())
       .then((newMessage) => {
         onAddMessage(newMessage);
         setBody("");
-      });
+      }).catch((err) => {
+        debugger
+      })
   }
 
   return (

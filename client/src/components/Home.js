@@ -3,7 +3,7 @@ import Game from "./Game.js";
 import MessageList from "./Comment/MessageList.js";
 import NewMessage from "./Comment/NewMessage.js";
 import "./Comment/Message.css"
-const testUser = { username: "Dfarlz97" };
+const testUser = { username: "Dfarlz97", id: 2 };
 // let inputs = {};
 
 export default function Home() {

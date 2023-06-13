@@ -2,10 +2,10 @@ from models import db, User, Puzzle, Message
 from app import app, fetch_quote
 
 NUM_PUZZLES = 1643
-user1 = User(username = 'Yinsont', email = 'yinson.tso@gmail.com', password = 'yinnyt', score=750)
-user2 = User(username = 'dfarlz97', email = 'dfarley1@binghamton.edu', password = 'Yuhyeet23!!', score=825)
-user3 = User(username = 'BobbyB00ls', email = 'bb99@gmail.com', password = 'boolinbobby', score=900)
-user4 = User(username = 'KuberneteAndSpaghetti12', email = 'ClusterClown.gmail.com', password = 'tenserflowin', score=50)
+user1 = User(username = 'Yinsont', email = 'yinson.tso@gmail.com', _password_hash = 'yinnyt', score=750)
+user2 = User(username = 'dfarlz97', email = 'dfarley1@binghamton.edu', _password_hash = 'Yuhyeet23!!', score=825)
+user3 = User(username = 'BobbyB00ls', email = 'bb99@gmail.com', _password_hash = 'boolinbobby', score=900)
+user4 = User(username = 'KuberneteAndSpaghetti12', email = 'ClusterClown@gmail.com', _password_hash = 'tenserflowin', score=50)
 userInfo = [user1, user2, user3, user4]
 
 message1 = Message(body='Wow! This game is almost as lit 🔥 as this UI', user=user1, score=user1.score)

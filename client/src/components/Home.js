@@ -3,10 +3,10 @@ import Game from "./Game.js";
 import MessageList from "./Comment/MessageList.js";
 import NewMessage from "./Comment/NewMessage.js";
 import "./Comment/Message.css"
-const testUser = { username: "Dfarlz97" };
+const testUser = { username: "Dfarlz97", id: 2 };
 // let inputs = {};
 
-export default function Home({ inputs }, { children }) {
+export default function Home() {
   const [messages, setMessages] = useState([]);
   const [search, setSearch] = useState("");
 
@@ -42,7 +42,7 @@ export default function Home({ inputs }, { children }) {
 
   return (
     <main className="Title">
-      <Game inputs={inputs} />
+      <Game/>
       <MessageList
         messages={displayedMessages}
         currentUser={testUser}

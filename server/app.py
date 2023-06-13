@@ -5,10 +5,11 @@ import requests
 from flask_cors import CORS
 from random import choice
 
-from models import db, User, Puzzle, Puzzlescore, Message
+
+from models import db, User, Puzzle, Message
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
@@ -32,7 +33,7 @@ def fetch_quote():
 class Users(Resource):
     def get(self):
         users = [u.to_dict(
-            only=("id", "user", "puzzlescores")) for u in User.query.all()]
+            only=("id", "user")) for u in User.query.all()]
         return users, 200
 
     def post(self):
@@ -76,7 +77,7 @@ def messages():
         response = make_response(jsonify([message.to_dict() for message in messages]), 200)
     elif request.method == 'POST':
         data = request.get_json()
-        message = Message(body=data['body'], username=data['username'])
+        message = Message(body=data['body'], user_id=data['user_id'])
         db.session.add(message)
         db.session.commit()
         response = make_response(jsonify(message.to_dict()), 201)

@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link } from "react-router-dom";
-import logo from "./Assets/favicon.ico"
+import ex1 from "./Assets/puzzle_pic1.png"
+import ex2 from "./Assets/puzzle_pic2.png"
+import correct from "./Assets/puzzle_img1.png"
 const MODAL_STYLES = {
     position: 'fixed',
     top: '50%',
@@ -34,7 +36,12 @@ export default function StartModal({closeModal}){
                         <p>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
                         <br></br>
                     <h2>Examples</h2>
-                        <img src={logo}></img>
+                        <img src={ex1}></img>
+                        <p><b>P</b> is in the word and in the correct spot.</p>
+                        <img src={ex2}></img>
+                        <p><b>E</b> is in many correct spots.</p>
+                        <img src={correct}></img>
+                        <p>You solved the Lit🔥 Crypt🧩!</p>
                         <p>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
                         <Link className="link" to='/signup'>Login or signup to view and compare your scores!</Link>
                     <button onClick = {closeModal}>Close</button>

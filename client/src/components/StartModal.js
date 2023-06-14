@@ -41,7 +41,7 @@ export default function StartModal({closeModal}){
                         <li id='ex'>Your score is calculated based on the time it takes you to solve the cyper.</li>
                         <p>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
                         <br></br>
-                    <h2>Examples</h2>
+                    <h2 id='ex'>Examples</h2>
                         <img style = {style_image} src={p4}></img>
                         <p id = 'ex'>White tiles indicate you have not made any guesses yet.</p>
                         <img style = {style_image} src={p1}></img>

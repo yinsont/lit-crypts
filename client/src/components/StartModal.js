@@ -1,8 +1,10 @@
 import React from 'react'
 import { Link } from "react-router-dom";
-import ex1 from "./Assets/puzzle_pic1.png"
-import ex2 from "./Assets/puzzle_pic2.png"
-import correct from "./Assets/puzzle_img1.png"
+import p1 from "./Assets/p1.png"
+import p2 from "./Assets/p2.png"
+import p3 from "./Assets/p3.png"
+import p4 from "./Assets/p4.png"
+
 const MODAL_STYLES = {
     position: 'fixed',
     top: '50%',
@@ -10,7 +12,7 @@ const MODAL_STYLES = {
     transform: 'translate(-50%, -50%)',
     backgroundColor: '#FFF',
     padding: '50px',
-    zIndex: 1000
+    zIndex: 1000,
 }
 
 const OVERLAY_STYLES = { //Makes background dark and unclickable
@@ -23,25 +25,31 @@ const OVERLAY_STYLES = { //Makes background dark and unclickable
     zIndex: 1000,
 }
 
+const style_image = {
+    width: '50vw'
+}
 
 export default function StartModal({closeModal}){
     return (
         <>
             <div style={OVERLAY_STYLES}>
                 <div style = {MODAL_STYLES}>
-                    <h1>How to Play</h1>
-                    <p>Guess the cypher as quickly as possible!</p>
-                        <li>The correct quote is coded using emojis</li>
-                        <li>All instances of the correct letter will appear and turn green when inputted</li>
+                    <h1 id = 'ex'>How to Play</h1>
+                    <p id ='ex'>Guess the cyphered quote as quickly as possible!</p>
+                        <li id='ex'>The correct quote is scrambled using random letters.</li>
+                        <li id='ex'>All instances of the correct letter will appear and turn green when inputted.</li>
+                        <li id='ex'>Your score is calculated based on the time it takes you to solve the cyper.</li>
                         <p>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
                         <br></br>
                     <h2>Examples</h2>
-                        <img src={ex1}></img>
-                        <p><b>P</b> is in the word and in the correct spot.</p>
-                        <img src={ex2}></img>
-                        <p><b>E</b> is in many correct spots.</p>
-                        <img src={correct}></img>
-                        <p>You solved the Lit🔥 Crypt🧩!</p>
+                        <img style = {style_image} src={p4}></img>
+                        <p id = 'ex'>White tiles indicate you have not made any guesses yet.</p>
+                        <img style = {style_image} src={p1}></img>
+                        <p id = 'ex'><b>H</b> is the correct letter in many tiles.</p>
+                        <img style = {style_image} src={p2}></img>
+                        <p id = 'ex'><b>H</b> is the correct letter, but <b>I</b> is wrong in many tiles.</p>
+                        <img style = {style_image} src={p3}></img>
+                        <p id='ex'>You solved the Lit🔥 Crypt🧩!</p>
                         <p>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
                         <Link className="link" to='/signup'>Login or signup to view and compare your scores!</Link>
                     <button onClick = {closeModal}>Close</button>

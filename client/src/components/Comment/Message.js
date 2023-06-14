@@ -39,13 +39,13 @@ function Message({ message, currentUser, onMessageDelete, onUpdateMessage }) {
       {isCurrentUser ? (
         <div className="actions">
           <button onClick={() => setIsEditing((isEditing) => !isEditing)}>
-            <span role="img" aria-label="edit">
-              ✏️
-            </span>
+           
+              EDIT
+            
           </button>
           <button onClick={handleDeleteClick}>
             <span role="img" aria-label="delete">
-              🗑
+              DELETE
             </span>
           </button>
         </div>

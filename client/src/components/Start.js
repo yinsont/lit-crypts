@@ -17,11 +17,10 @@ export default function Start(){
     }
 
     return(
-        <div classsName = 'Start'>
-            <h1>Welcome to Lit🔥 Crypts🧩</h1>
-            <h3>Try to decipher the encrypted sentence using as little time as possible</h3>
-
-            <button onClick = {handleClickPlay}>Play</button>
+        <div id ='opener'>
+            <h1 id='welcome'>Welcome to Lit🔥 Crypts🧩</h1>
+            <h2 id='try'>Try to decipher the encrypted sentence using as little time as possible</h2>
+            <button className='glow-on-hover' onClick = {handleClickPlay}>Close</button>
         </div>
     )
 }

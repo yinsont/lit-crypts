@@ -52,7 +52,8 @@ export default function StartModal({closeModal}){
                         <p id='ex'>You solved the Lit🔥 Crypt🧩!</p>
                         <p>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
                         <Link className="link" to='/signup'>Login or signup to view and compare your scores!</Link>
-                    <button onClick = {closeModal}>Close</button>
+                        <p>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
+                    <button class="glow-on-hover" onClick = {closeModal}>START GAME</button>
                     
                 </div> 
             </div>

@@ -352,3 +352,5 @@ dark-mode - https://www.makeuseof.com/how-to-add-dark-mode-to-a-react-applicatio
 import { Card } from "semantic-ui-react";
 
 quote api: https://type.fit/api/quotes
+
+button css https://webdeasy.de/en/top-css-buttons-en/

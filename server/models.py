@@ -1,6 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy import text
+import ipdb
+
+# from app import bcrypt
 
 db = SQLAlchemy()
 
@@ -11,10 +14,10 @@ class User(db.Model, SerializerMixin):
     username = db.Column(db.String)
     email = db.Column(db.String)
     password = db.Column(db.String)
-    score = db.Column(db.Integer)  
-
+    score = db.Column(db.Integer, default=0)  
+    
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<User %r>' % self.username, self.email, self.password
 
 class Puzzle(db.Model, SerializerMixin): 
     __tablename__ = 'puzzles'

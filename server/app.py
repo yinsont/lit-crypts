@@ -4,12 +4,14 @@ from flask_restful import Api, Resource
 import requests
 from flask_cors import CORS, cross_origin
 from random import choice
+from flask_bcrypt import Bcrypt
 import ipdb
 
 
 from models import db, User, Puzzle, Message
 
 app = Flask(__name__)
+app.secret_key = b'Y\xf1Xz\x00\xad|eQ\x80t \xca\x1a\x10K'
 CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -17,6 +19,7 @@ app.json.compact = False
 
 migrate = Migrate(app, db)
 db.init_app(app)
+# bcrypt = Bcrypt(app)
 api = Api(app)
 
 # Function to fetch a quote
@@ -40,11 +43,15 @@ class Users(Resource):
     def post(self):
         try:
             new_user = User(
-                user=request.json['user'],
+                username=request.json['user']['username'],
+                email=request.json['user']['email'],
+                password=request.json['user']['password']
             )
+            # ipdb.set_trace()
+            
             db.session.add(new_user)
             db.session.commit()
-            return new_user.to_dict(only=("id", "user")), 201
+            return new_user.to_dict(only=("id", "username", 'email', 'password')), 201
         except:
             return {"error": "400: Validation error"}, 400
 

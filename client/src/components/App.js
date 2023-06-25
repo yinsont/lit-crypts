@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "./Navbar.js";
 import Home from "./Home.js";
 import { Route, Routes } from "react-router-dom";
@@ -9,8 +9,8 @@ import Leaderboard from "./Leaderboard.js";
 import Start from "./Start.js"
 
 function App() {
-  let inputs = {};
 
+  const [user, setUser] = useState(null)
   return (
     <div>
       <Navbar />
@@ -19,7 +19,7 @@ function App() {
         <Route path="/" exact="true" element={<Start />} />
         <Route path="/home" exact="true" element={<Home/>} />
         <Route path="/about" exact="true" element={<About />} />
-        <Route path="/signup" exact="true" element={<Signup />} />
+        <Route path="/signup" exact="true" element={<Signup onLogin = {setUser}/>} />
         <Route path="/login" exact="true" element={<Login />} />
         <Route path="/leaderboard" exact="true" element={<Leaderboard />} />
       </Routes>
